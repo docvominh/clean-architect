@@ -17,6 +17,7 @@
 - Diff behavior between main and your changes when relevant
 - Ask yourself: "Would a staff engineer approve this?"
 - Run tests, check logs, demonstrate correctness
+- Stop every service/process you started for verification (`dotnet run`, `ng serve`, background API instances, etc.) as soon as you're done with it - a leftover instance locks build output (`bin`/`obj`) and blocks the next `dotnet build`. When backgrounding via `nohup`, kill the whole process chain (shell + child process), not just the top-level PID.
 
 ### 4. Demand Elegance (Balanced)
 

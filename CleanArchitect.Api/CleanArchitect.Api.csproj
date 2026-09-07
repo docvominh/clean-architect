@@ -17,8 +17,4 @@
       <ProjectReference Include="..\CleanArchitect.Infrastructure\CleanArchitect.Infrastructure.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Dto\" />
-    </ItemGroup>
-
 </Project>

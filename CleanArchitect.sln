@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitect.Api", "Clean
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitect.Database", "CleanArchitect.Database\CleanArchitect.Database.csproj", "{456BA52C-2D0C-4D5B-893E-53610CA9CFB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitect.Application.Tests", "CleanArchitect.Application.Tests\CleanArchitect.Application.Tests.csproj", "{62817898-064F-4A51-9E7A-A97476B708E7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitect.Application.UnitTests", "CleanArchitect.Application.UnitTests\CleanArchitect.Application.UnitTests.csproj", "{62817898-064F-4A51-9E7A-A97476B708E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

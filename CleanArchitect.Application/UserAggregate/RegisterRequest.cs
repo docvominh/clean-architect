@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CleanArchitect.Application.UserAggregate;
 
-public class RegisterRequest
+public sealed record RegisterRequest
 {
     [Required]
     [EmailAddress]

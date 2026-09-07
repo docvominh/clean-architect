@@ -1,6 +1,6 @@
 namespace CleanArchitect.Application.UserAggregate;
 
-public class AuthResponse
+public sealed record AuthResponse
 {
     public required string AccessToken { get; init; }
 

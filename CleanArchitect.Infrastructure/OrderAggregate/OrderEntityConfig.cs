@@ -9,6 +9,6 @@ public class OrderEntityConfig: IEntityTypeConfiguration<Order>
 {
     public void Configure(EntityTypeBuilder<Order> builder)
     {
-        throw new NotImplementedException();
+        // Not yet applied in AppDbContext - Order has no members to map yet.
     }
 }

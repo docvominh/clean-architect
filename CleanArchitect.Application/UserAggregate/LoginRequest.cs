@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CleanArchitect.Application.UserAggregate;
 
-public class LoginRequest
+public sealed record LoginRequest
 {
     [Required]
     [EmailAddress]

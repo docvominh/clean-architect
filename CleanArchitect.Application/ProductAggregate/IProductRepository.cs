@@ -1,6 +1,6 @@
 ﻿namespace CleanArchitect.Application.ProductAggregate;
 
-public class IProductRepository
+public interface IProductRepository
 {
-    
+
 }
