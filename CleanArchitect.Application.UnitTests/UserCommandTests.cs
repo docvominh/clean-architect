@@ -13,11 +13,11 @@ namespace CleanArchitect.Application.UnitTests;
 public class UserCommandTests
 {
     private static readonly TokenSubject User = new(Guid.NewGuid(), "user@example.com", "user", "User");
+    private readonly Mock<IRefreshTokenCookie> cookie = new();
+    private readonly Mock<IRefreshTokenRepository> refreshTokens = new();
+    private readonly Mock<ITokenService> tokens = new();
 
     private readonly Mock<IUserIdentityService> users = new();
-    private readonly Mock<ITokenService> tokens = new();
-    private readonly Mock<IRefreshTokenRepository> refreshTokens = new();
-    private readonly Mock<IRefreshTokenCookie> cookie = new();
 
     public UserCommandTests()
     {

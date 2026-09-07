@@ -4,5 +4,4 @@ namespace CleanArchitect.Infrastructure.StorageAggregate;
 
 public class AzureBlobService : IStorageService
 {
-
 }

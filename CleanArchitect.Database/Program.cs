@@ -1,11 +1,12 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using CleanArchitect.Database;
+
 using Microsoft.Extensions.Configuration;
 
 Console.WriteLine("Migration started");
 
-string environment = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Development";
+var environment = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Development";
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
@@ -13,7 +14,6 @@ var configuration = new ConfigurationBuilder()
     .AddJsonFile($"appsettings.{environment}.json", true)
     .AddEnvironmentVariables()
     .Build();
-
 
 var connectionString = configuration.GetConnectionString("AzureSql");
 

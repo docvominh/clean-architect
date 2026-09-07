@@ -1,7 +1,6 @@
 using CleanArchitect.Application.UserAggregate;
 
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitect.Api.Auth;
 

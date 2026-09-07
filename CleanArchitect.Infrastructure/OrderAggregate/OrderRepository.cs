@@ -4,5 +4,4 @@ namespace CleanArchitect.Infrastructure.OrderAggregate;
 
 public class OrderRepository : IOrderRepository
 {
-
 }

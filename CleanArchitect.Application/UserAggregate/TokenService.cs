@@ -17,15 +17,15 @@ public class TokenService(IOptions<JwtOptions> options) : ITokenService
     {
         var claims = new List<Claim>
         {
-            new (JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new (ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new (ClaimTypes.Email, user.Email ?? string.Empty),
-            new (ClaimTypes.Name, user.DisplayName ?? user.UserName ?? string.Empty)
+            new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new(ClaimTypes.Email, user.Email ?? string.Empty),
+            new(ClaimTypes.Name, user.DisplayName ?? user.UserName ?? string.Empty)
         };
 
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
-        DateTimeOffset expiresAt = DateTimeOffset.UtcNow.AddMinutes(_jwt.AccessTokenMinutes);
+        var expiresAt = DateTimeOffset.UtcNow.AddMinutes(_jwt.AccessTokenMinutes);
         var signingKey = new SymmetricSecurityKey(Convert.FromBase64String(_jwt.Key));
         var credentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 

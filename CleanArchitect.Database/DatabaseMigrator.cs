@@ -1,4 +1,5 @@
 using System.Reflection;
+
 using DbUp;
 using DbUp.Engine;
 
@@ -10,7 +11,7 @@ public static class DatabaseMigrator
     {
         EnsureDatabase.For.SqlDatabase(connectionString);
 
-        UpgradeEngine upgrader =
+        var upgrader =
             DeployChanges.To
                 .SqlDatabase(connectionString)
                 .JournalToSqlTable("dbo", "_SchemaVersions")

@@ -1,4 +1,5 @@
 using CleanArchitect.Application.UserAggregate;
+
 using Microsoft.AspNetCore.Identity;
 
 namespace CleanArchitect.Infrastructure.UserAggregate;
@@ -36,11 +37,13 @@ public sealed class UserIdentityService(UserManager<AppUser> users, SignInManage
     public async Task<bool> CheckPasswordAsync(Guid userId, string password, CancellationToken cancellationToken)
     {
         var user = await GetUserAsync(userId, cancellationToken);
-        return (await signIn.CheckPasswordSignInAsync(user, password, lockoutOnFailure: true)).Succeeded;
+        return (await signIn.CheckPasswordSignInAsync(user, password, true)).Succeeded;
     }
 
-    public async Task<IList<string>> GetRolesAsync(Guid userId, CancellationToken cancellationToken) =>
-        await users.GetRolesAsync(await GetUserAsync(userId, cancellationToken));
+    public async Task<IList<string>> GetRolesAsync(Guid userId, CancellationToken cancellationToken)
+    {
+        return await users.GetRolesAsync(await GetUserAsync(userId, cancellationToken));
+    }
 
     private async Task<AppUser> GetUserAsync(Guid userId, CancellationToken cancellationToken)
     {
@@ -48,13 +51,16 @@ public sealed class UserIdentityService(UserManager<AppUser> users, SignInManage
         return await users.FindByIdAsync(userId.ToString()) ?? throw new UserAuthenticationException();
     }
 
-    private static TokenSubject Subject(AppUser user) => new(user.Id, user.Email, user.UserName, user.DisplayName);
+    private static TokenSubject Subject(AppUser user)
+    {
+        return new TokenSubject(user.Id, user.Email, user.UserName, user.DisplayName);
+    }
 
     private static void EnsureSuccess(IdentityResult result)
     {
         if (!result.Succeeded)
-            throw new UserValidationException(result.Errors.GroupBy(e => e.Code)
-                .ToDictionary(group => group.Key, group => group.Select(e => e.Description).ToArray()));
+            throw new UserValidationException(
+                result.Errors.GroupBy(e => e.Code)
+                    .ToDictionary(group => group.Key, group => group.Select(e => e.Description).ToArray()));
     }
 }
-

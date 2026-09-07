@@ -9,4 +9,3 @@ public interface IUserIdentityService
     Task<bool> CheckPasswordAsync(Guid userId, string password, CancellationToken cancellationToken);
     Task<IList<string>> GetRolesAsync(Guid userId, CancellationToken cancellationToken);
 }
-

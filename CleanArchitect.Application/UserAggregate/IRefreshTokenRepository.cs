@@ -8,4 +8,3 @@ public interface IRefreshTokenRepository
     void Add(RefreshToken token);
     Task SaveChangesAsync(CancellationToken cancellationToken);
 }
-

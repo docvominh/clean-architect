@@ -1,8 +1,8 @@
 using CleanArchitect.Api.Auth;
 using CleanArchitect.Application.UserAggregate;
+using CleanArchitect.Application.UserAggregate.Command;
 using CleanArchitect.Infrastructure;
 using CleanArchitect.Infrastructure.UserAggregate;
-using CleanArchitect.Application.UserAggregate.Command;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -10,31 +10,29 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 
-WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-string? connectionString = builder.Configuration.GetConnectionString("AzureSql");
+var connectionString = builder.Configuration.GetConnectionString("AzureSql");
 
 builder.Services.AddDbContext<AppDbContext>(o => o.UseSqlServer(connectionString));
 
 builder.Services.AddOptions<JwtOptions>()
     .Bind(builder.Configuration.GetSection(JwtOptions.SectionName))
-    .Validate(options =>
-    {
-        if (string.IsNullOrWhiteSpace(options.Key))
+    .Validate(
+        options =>
         {
-            return false;
-        }
+            if (string.IsNullOrWhiteSpace(options.Key)) return false;
 
-        try
-        {
-            return Convert.FromBase64String(options.Key).Length >= 32;
-        }
-        catch (FormatException)
-        {
-            return false;
-        }
-    }, "Jwt:Key must be a Base64-encoded key containing at least 32 bytes.")
+            try
+            {
+                return Convert.FromBase64String(options.Key).Length >= 32;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+        }, "Jwt:Key must be a Base64-encoded key containing at least 32 bytes.")
     .Validate(options => options.AccessTokenMinutes > 0, "Jwt:AccessTokenMinutes must be positive.")
     .Validate(options => options.RefreshTokenDays > 0, "Jwt:RefreshTokenDays must be positive.")
     .ValidateOnStart();
@@ -51,7 +49,7 @@ builder.Services.AddIdentityCore<AppUser>(options =>
     .AddSignInManager()
     .AddDefaultTokenProviders();
 
-IConfigurationSection jwtSection = builder.Configuration.GetSection(JwtOptions.SectionName);
+var jwtSection = builder.Configuration.GetSection(JwtOptions.SectionName);
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -131,19 +129,15 @@ builder.Services.AddSwaggerGen(options =>
     }
 );
 
-WebApplication app = builder.Build();
+var app = builder.Build();
 
-await using (AsyncServiceScope scope = app.Services.CreateAsyncScope())
+await using (var scope = app.Services.CreateAsyncScope())
 {
-    RoleManager<IdentityRole<Guid>> roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
-    foreach (string role in new[] { "Admin", "User" })
-    {
+    foreach (var role in new[] { "Admin", "User" })
         if (!await roleManager.RoleExistsAsync(role))
-        {
             await roleManager.CreateAsync(new IdentityRole<Guid>(role));
-        }
-    }
 }
 
 // Configure the HTTP request pipeline.

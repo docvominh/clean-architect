@@ -1,1 +1,2 @@
-ALTER TABLE AspNetUsers ADD "DisplayName" character varying(256);
+ALTER TABLE AspNetUsers
+    ADD "DisplayName" character varying(256);

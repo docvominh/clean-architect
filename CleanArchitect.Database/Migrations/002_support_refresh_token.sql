@@ -3,7 +3,7 @@
 CREATE TABLE [RefreshTokens]
 (
     [Id]              int IDENTITY (1,1) NOT NULL,
-    [UserId]          uniqueidentifier      NOT NULL,
+    [UserId]          uniqueidentifier   NOT NULL,
     [Token]           nvarchar(512)      NOT NULL,
     [ExpiresAt]       datetimeoffset     NOT NULL,
     [RevokedAt]       datetimeoffset     NULL,

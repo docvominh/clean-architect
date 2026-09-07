@@ -12,7 +12,7 @@ public sealed class AuthSessionService(
     // token so callers can link it to the token it replaces (e.g. RefreshTokenCommandHandler).
     public async Task<(AuthResponse Response, RefreshToken RefreshToken)> CreateAsync(TokenSubject user, CancellationToken cancellationToken)
     {
-        IList<string> roles = await users.GetRolesAsync(user.Id, cancellationToken);
+        var roles = await users.GetRolesAsync(user.Id, cancellationToken);
         var (accessToken, expiresAt) = tokens.GenerateAccessToken(user, roles);
         var refreshToken = tokens.GenerateRefreshToken(user.Id);
         refreshTokens.Add(refreshToken);

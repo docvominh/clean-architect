@@ -10,7 +10,7 @@ public class RefreshTokenCommandHandler(
 {
     public async Task<AuthResponse> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
     {
-        string? refreshTokenValue = refreshTokenCookie.Read();
+        var refreshTokenValue = refreshTokenCookie.Read();
         if (string.IsNullOrEmpty(refreshTokenValue)) throw new UserAuthenticationException();
 
         var token = await refreshTokens.FindAsync(refreshTokenValue, cancellationToken);

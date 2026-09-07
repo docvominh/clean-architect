@@ -8,7 +8,7 @@ public class RevokeTokenCommandHandler(
 {
     public async Task Handle(RevokeTokenCommand request, CancellationToken cancellationToken)
     {
-        string? refreshTokenValue = refreshTokenCookie.Read();
+        var refreshTokenValue = refreshTokenCookie.Read();
         if (!string.IsNullOrEmpty(refreshTokenValue))
         {
             var token = await refreshTokens.FindAsync(refreshTokenValue, cancellationToken);

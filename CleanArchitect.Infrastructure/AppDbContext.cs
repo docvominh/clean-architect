@@ -5,16 +5,11 @@ using CleanArchitect.Infrastructure.UserAggregate;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace CleanArchitect.Infrastructure;
 
 public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
 {
-    // public DbSet<Media> Medias { get; set; }
-
-    public DbSet<RefreshToken> RefreshTokens { get; set; }
-
     public AppDbContext()
     {
     }
@@ -23,12 +18,13 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
     {
     }
 
+    // public DbSet<Media> Medias { get; set; }
+
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        if (!optionsBuilder.IsConfigured)
-        {
-            optionsBuilder.UseSqlServer();
-        }
+        if (!optionsBuilder.IsConfigured) optionsBuilder.UseSqlServer();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -52,12 +48,12 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        IEnumerable<EntityEntry> entries = ChangeTracker
+        var entries = ChangeTracker
             .Entries()
             .Where(e => e is { Entity: BaseEntity, State: EntityState.Added or EntityState.Modified }
             );
 
-        foreach (EntityEntry entityEntry in entries)
+        foreach (var entityEntry in entries)
         {
             if (entityEntry.State == EntityState.Added)
             {
@@ -65,10 +61,7 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
                 ((BaseEntity)entityEntry.Entity).ModifiedAt = DateTimeOffset.UtcNow;
             }
 
-            if (entityEntry.State == EntityState.Modified)
-            {
-                ((BaseEntity)entityEntry.Entity).ModifiedAt = DateTimeOffset.UtcNow;
-            }
+            if (entityEntry.State == EntityState.Modified) ((BaseEntity)entityEntry.Entity).ModifiedAt = DateTimeOffset.UtcNow;
         }
 
         return await base.SaveChangesAsync(cancellationToken);

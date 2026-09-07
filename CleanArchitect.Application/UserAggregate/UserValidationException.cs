@@ -6,4 +6,3 @@ public sealed class UserValidationException(IReadOnlyDictionary<string, string[]
 }
 
 public sealed class UserAuthenticationException() : Exception("Authentication failed.");
-

@@ -16,16 +16,22 @@ namespace CleanArchitect.Api.Controllers;
 public class UserController(ISender sender) : ControllerBase
 {
     [HttpPost("register")]
-    public Task<AuthResponse> Register(RegisterRequest request, CancellationToken cancellationToken) =>
-        sender.Send(new RegisterCommand(request), cancellationToken);
+    public Task<AuthResponse> Register(RegisterRequest request, CancellationToken cancellationToken)
+    {
+        return sender.Send(new RegisterCommand(request), cancellationToken);
+    }
 
     [HttpPost("login")]
-    public Task<AuthResponse> Login(LoginRequest request, CancellationToken cancellationToken) =>
-        sender.Send(new LoginCommand(request), cancellationToken);
+    public Task<AuthResponse> Login(LoginRequest request, CancellationToken cancellationToken)
+    {
+        return sender.Send(new LoginCommand(request), cancellationToken);
+    }
 
     [HttpPost("refresh")]
-    public Task<AuthResponse> Refresh(CancellationToken cancellationToken) =>
-        sender.Send(new RefreshTokenCommand(), cancellationToken);
+    public Task<AuthResponse> Refresh(CancellationToken cancellationToken)
+    {
+        return sender.Send(new RefreshTokenCommand(), cancellationToken);
+    }
 
     [HttpPost("revoke")]
     [Authorize]

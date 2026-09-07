@@ -9,7 +9,10 @@ public sealed class RefreshTokenCookie(IHttpContextAccessor accessor) : IRefresh
 
     private HttpContext Context => accessor.HttpContext!;
 
-    public string? Read() => Context.Request.Cookies[CookieName];
+    public string? Read()
+    {
+        return Context.Request.Cookies[CookieName];
+    }
 
     public void Write(string token, DateTimeOffset expiresAt)
     {
