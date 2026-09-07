@@ -1,0 +1,23 @@
+<main class="auth-card">
+    <p class="eyebrow">CLEAN ARCHITECT</p>
+    <h1>Create your account</h1>
+    <p>Enter your details to get started.</p>
+    <form #form="ngForm" (ngSubmit)="submit()">
+        <label for="displayName">Display name</label>
+        <input id="displayName" name="displayName" [(ngModel)]="displayName" autocomplete="name" />
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" [(ngModel)]="email" required email autocomplete="email" />
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" [(ngModel)]="password" required autocomplete="new-password" />
+        @if (error()) {
+            <p role="alert" class="error">{{ error() }}</p>
+        }
+        <button type="submit" [disabled]="form.invalid || busy()">{{ busy() ? 'Please wait...' : 'Create account' }}</button>
+    </form>
+    <p>
+        <a routerLink="/login" [queryParams]="{ returnUrl: returnUrl }">
+            Already have an account? Sign in
+        </a>
+    </p>
+</main>
+

@@ -1,0 +1,77 @@
+:root {
+    font-family: system-ui, sans-serif;
+    color: #172d3b;
+    background: #f1f5f7;
+}
+body {
+    margin: 0;
+}
+* {
+    box-sizing: border-box;
+}
+.auth-card {
+    max-width: 440px;
+    margin: 10vh auto;
+    padding: 36px;
+    background: white;
+    border: 1px solid #dce5e9;
+    border-radius: 16px;
+    box-shadow: 0 12px 40px #172d3b0a;
+}
+h1 {
+    font-size: 28px;
+    letter-spacing: -0.8px;
+}
+p {
+    line-height: 1.6;
+}
+.eyebrow {
+    color: #146a74;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+label {
+    display: block;
+    margin: 20px 0 7px;
+    font-size: 14px;
+    font-weight: 600;
+}
+input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #aebfc8;
+    border-radius: 6px;
+    font: inherit;
+}
+button {
+    width: 100%;
+    margin-top: 24px;
+    padding: 13px;
+    background: #155e68;
+    color: white;
+    border: 0;
+    border-radius: 6px;
+    font: inherit;
+    cursor: pointer;
+}
+button:disabled {
+    opacity: 0.55;
+    cursor: default;
+}
+a {
+    color: #155e68;
+}
+.error {
+    color: #a22727;
+}
+:focus-visible {
+    outline: 3px solid #4cb7c7;
+    outline-offset: 3px;
+}
+@media (max-width: 500px) {
+    .auth-card {
+        margin: 24px 16px;
+        padding: 24px;
+    }
+}

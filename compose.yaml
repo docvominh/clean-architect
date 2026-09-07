@@ -1,0 +1,55 @@
+name: clean-architect
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2025-latest
+    container_name: clean_architect_sqlserver
+    restart: "no"
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: "${MSSQL_SA_PASSWORD:-Hello123#}"
+    ports:
+      - '1433:1433'
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    healthcheck:
+      test: [ 'CMD-SHELL', '/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "$$MSSQL_SA_PASSWORD" -C -b -l 2 -Q "SELECT 1"' ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  sqlserver-init:
+    image: mcr.microsoft.com/mssql/server:2025-latest
+    restart: "no"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    environment:
+      SQLCMDPASSWORD: "${MSSQL_SA_PASSWORD:-Hello123#}"
+    entrypoint: [ '/opt/mssql-tools18/bin/sqlcmd' ]
+    command:
+      - '-S'
+      - 'sqlserver,1433'
+      - '-U'
+      - 'sa'
+      - '-C'
+      - '-b'
+      - '-Q'
+      - "IF DB_ID(N'clean_architect') IS NULL CREATE DATABASE [clean_architect];"
+
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite:latest
+    container_name: clean_architect_azurite
+    restart: "no"
+    ports:
+      - '10000:10000'
+      - '10001:10001'
+      - '10002:10002'
+    volumes:
+      - azurite_data:/data
+
+volumes:
+  sqlserver_data:
+  azurite_data:
