@@ -1,0 +1,39 @@
+<main class="admin-page">
+    <div class="toolbar">
+        <h1>Products</h1>
+        <a class="button" routerLink="/admin/product/new">+ New Product</a>
+    </div>
+
+    @if (error()) {
+        <p role="alert" class="error">{{ error() }}</p>
+    }
+
+    @if (loading()) {
+        <p>Loading...</p>
+    } @else if (products().length === 0) {
+        <p>No products yet.</p>
+    } @else {
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Manufacturer</th>
+                    <th>Price</th>
+                    <th>Discount</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (product of products(); track product.id) {
+                    <tr>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.manufacturer }}</td>
+                        <td>{{ product.price | number: '1.2-2' }}</td>
+                        <td>{{ product.priceDiscount != null ? (product.priceDiscount | number: '1.2-2') : '—' }}</td>
+                        <td><a class="button-link" [routerLink]="['/admin/product', product.id, 'edit']">Edit</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</main>

@@ -42,11 +42,11 @@ public class TokenService(IOptions<JwtOptions> options) : ITokenService
 
     public RefreshToken GenerateRefreshToken(Guid userId)
     {
-        return new RefreshToken
-        {
-            UserId = userId,
-            Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
-            ExpiresAt = DateTimeOffset.UtcNow.AddDays(_jwt.RefreshTokenDays)
-        };
+        return new RefreshToken(
+            Guid.NewGuid(),
+            userId,
+            userId,
+            Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+            DateTimeOffset.UtcNow.AddDays(_jwt.RefreshTokenDays));
     }
 }

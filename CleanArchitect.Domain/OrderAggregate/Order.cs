@@ -1,28 +1,26 @@
-namespace CleanArchitect.Domain.UserAggregate;
+namespace CleanArchitect.Domain.OrderAggregate;
 
-public class UserAddress : BaseEntity
+public class Order : BaseEntity
 {
-    public UserAddress(
+    public Order(
         Guid id,
         Guid createBy,
-        Guid userId,
         string country,
         string city,
         string street,
         string contactPhoneNumber,
         string? state = null,
-        bool isDefault = false) : base(id, createBy)
+        OrderStatus status = OrderStatus.Pending,
+        decimal totalAmount = 0m) : base(id, createBy)
     {
-        UserId = userId;
         Country = country;
         State = state;
         City = city;
         Street = street;
         ContactPhoneNumber = contactPhoneNumber;
-        IsDefault = isDefault;
+        Status = status;
+        TotalAmount = totalAmount;
     }
-
-    public Guid UserId { get; init; }
 
     public string Country { get; init; }
 
@@ -34,5 +32,9 @@ public class UserAddress : BaseEntity
 
     public string ContactPhoneNumber { get; init; }
 
-    public bool IsDefault { get; init; }
+    public OrderStatus Status { get; init; }
+
+    public decimal TotalAmount { get; init; }
+
+    public List<OrderProduct> OrderProducts { get; init; } = [];
 }

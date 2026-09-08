@@ -18,25 +18,17 @@ public class RegisterCommandHandler(
         await users.AddToRoleAsync(subject.Id, "User", cancellationToken);
 
         var addresses = request.RegisterRequest.Addresses ?? [];
-        var user = new User
-        {
-            Id = subject.Id,
-            DisplayName = request.RegisterRequest.DisplayName,
-            CreateBy = subject.Id,
-            UpdateBy = subject.Id,
-            Addresses = addresses.Select((address, i) => new UserAddress
-            {
-                UserId = subject.Id,
-                IsDefault = i == 0,
-                Country = address.Country,
-                State = address.State,
-                City = address.City,
-                Street = address.Street,
-                ContactPhoneNumber = address.ContactPhoneNumber,
-                CreateBy = subject.Id,
-                UpdateBy = subject.Id,
-            }).ToList(),
-        };
+        var user = new User(subject.Id, subject.Id, request.RegisterRequest.DisplayName);
+        user.UpdateAddress(addresses.Select((address, i) => new UserAddress(
+            Guid.NewGuid(),
+            subject.Id,
+            subject.Id,
+            address.Country,
+            address.City,
+            address.Street,
+            address.ContactPhoneNumber,
+            address.State,
+            isDefault: i == 0)).ToList());
         await userRepository.Add(user);
 
         var (response, _) = await sessions.CreateAsync(subject with { DisplayName = request.RegisterRequest.DisplayName }, cancellationToken);

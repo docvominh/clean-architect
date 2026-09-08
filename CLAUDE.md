@@ -46,6 +46,7 @@
 - Business logic belongs in services.
 - Always use the latest versions of dependencies.
 - Minimize the amount of code generated.
+- Domain project entities: only a constructor is allowed to set property values. No public setters — use `init` (or private `set`) plus a constructor that takes the required fields, so an entity can never exist in an invalid state.
 
 ## Test
 - Library: xUnit, Shoudly, Moq

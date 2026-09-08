@@ -112,3 +112,61 @@ fieldset {
         padding: 24px;
     }
 }
+.admin-page {
+    max-width: 960px;
+    margin: 6vh auto;
+    padding: 36px;
+    background: white;
+    border: 1px solid #dce5e9;
+    border-radius: 16px;
+    box-shadow: 0 12px 40px #172d3b0a;
+}
+.admin-page .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.admin-page .toolbar h1 {
+    margin: 0;
+}
+.button,
+.button-link {
+    display: inline-block;
+    padding: 10px 16px;
+    background: #155e68;
+    color: white;
+    border: 0;
+    border-radius: 6px;
+    font: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+.button-link {
+    padding: 6px 12px;
+    background: transparent;
+    color: #155e68;
+    border: 1px solid #dce5e9;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th,
+td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid #dce5e9;
+}
+th {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #146a74;
+}
+@media (max-width: 700px) {
+    .admin-page {
+        margin: 24px 16px;
+        padding: 24px;
+    }
+}

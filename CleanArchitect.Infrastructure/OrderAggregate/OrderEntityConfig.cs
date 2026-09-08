@@ -1,4 +1,4 @@
-using CleanArchitect.Domain.Order;
+using CleanArchitect.Domain.OrderAggregate;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

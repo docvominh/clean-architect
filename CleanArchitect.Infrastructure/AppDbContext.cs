@@ -1,6 +1,6 @@
 using CleanArchitect.Domain;
-using CleanArchitect.Domain.Order;
-using CleanArchitect.Domain.Product;
+using CleanArchitect.Domain.OrderAggregate;
+using CleanArchitect.Domain.ProductAggregate;
 using CleanArchitect.Domain.UserAggregate;
 using CleanArchitect.Infrastructure.OrderAggregate;
 using CleanArchitect.Infrastructure.ProductAggregate;

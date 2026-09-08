@@ -2,11 +2,18 @@ namespace CleanArchitect.Domain.UserAggregate;
 
 public class RefreshToken : BaseEntity
 {
-    public required Guid UserId { get; set; }
+    public RefreshToken(Guid id, Guid createBy, Guid userId, string token, DateTimeOffset expiresAt) : base(id, createBy)
+    {
+        UserId = userId;
+        Token = token;
+        ExpiresAt = expiresAt;
+    }
 
-    public required string Token { get; set; }
+    public Guid UserId { get; init; }
 
-    public DateTimeOffset ExpiresAt { get; set; }
+    public string Token { get; init; }
+
+    public DateTimeOffset ExpiresAt { get; init; }
 
     public DateTimeOffset? RevokedAt { get; set; }
 

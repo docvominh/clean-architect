@@ -1,8 +1,10 @@
-using CleanArchitect.Api.Auth;
+using CleanArchitect.Api;
+using CleanArchitect.Application.ProductAggregate;
 using CleanArchitect.Application.UserAggregate;
 using CleanArchitect.Application.UserAggregate.AspnetIdentity;
 using CleanArchitect.Application.UserAggregate.Command;
 using CleanArchitect.Infrastructure;
+using CleanArchitect.Infrastructure.ProductAggregate;
 using CleanArchitect.Infrastructure.UserAggregate;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -75,6 +77,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserIdentityService, UserIdentityService>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IRefreshTokenCookie, RefreshTokenCookie>();
 builder.Services.AddScoped<AuthSessionService>();
@@ -133,14 +136,7 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
-await using (var scope = app.Services.CreateAsyncScope())
-{
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
-
-    foreach (var role in new[] { "Admin", "User" })
-        if (!await roleManager.RoleExistsAsync(role))
-            await roleManager.CreateAsync(new IdentityRole<Guid>(role));
-}
+await app.SetupAdminUserAsync();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

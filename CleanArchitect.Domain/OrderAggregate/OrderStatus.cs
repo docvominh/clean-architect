@@ -1,4 +1,4 @@
-namespace CleanArchitect.Domain.Order;
+namespace CleanArchitect.Domain.OrderAggregate;
 
 public enum OrderStatus
 {

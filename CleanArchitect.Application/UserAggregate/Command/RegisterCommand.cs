@@ -11,5 +11,5 @@ public class RegisterCommand : IRequest<AuthResponse>
         RegisterRequest = request;
     }
 
-    public RegisterRequest RegisterRequest { get; set; }
+    public RegisterRequest RegisterRequest { get; }
 }

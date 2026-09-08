@@ -1,10 +1,11 @@
+using CleanArchitect.Application;
 using CleanArchitect.Application.UserAggregate;
 
 using Microsoft.AspNetCore.Diagnostics;
 
-namespace CleanArchitect.Api.Auth;
+namespace CleanArchitect.Api;
 
-// Maps UserAggregate domain exceptions to HTTP responses so command handlers can just throw,
+// Maps Application-layer domain exceptions to HTTP responses so command handlers can just throw,
 // instead of every controller action repeating the same try/catch.
 public sealed class UserExceptionHandler : IExceptionHandler
 {
@@ -23,6 +24,10 @@ public sealed class UserExceptionHandler : IExceptionHandler
 
             case UserAuthenticationException:
                 httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return true;
+
+            case NotFoundException:
+                httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
                 return true;
 
             default:
