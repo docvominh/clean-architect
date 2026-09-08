@@ -7,7 +7,7 @@ using CleanArchitect.Domain.UserAggregate;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace CleanArchitect.Application.UserAggregate;
+namespace CleanArchitect.Application.UserAggregate.AspnetIdentity;
 
 public class TokenService(IOptions<JwtOptions> options) : ITokenService
 {

@@ -1,3 +1,5 @@
+using CleanArchitect.Application.UserAggregate.AspnetIdentity;
+
 using MediatR;
 
 namespace CleanArchitect.Application.UserAggregate.Command;

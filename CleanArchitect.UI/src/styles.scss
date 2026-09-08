@@ -65,6 +65,43 @@ a {
 .error {
     color: #a22727;
 }
+fieldset {
+    padding: 0;
+    border: 0;
+    margin: 0;
+}
+.address-row {
+    border: 1px solid #dce5e9;
+    border-radius: 8px;
+    padding: 4px 16px 16px;
+    margin-top: 16px;
+}
+.address-row legend {
+    padding: 0 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #146a74;
+}
+.address-row .remove-address {
+    width: auto;
+    margin-top: 16px;
+    padding: 8px 14px;
+    background: transparent;
+    color: #a22727;
+    border: 1px solid #dce5e9;
+    border-radius: 6px;
+}
+.add-address {
+    width: auto;
+    margin-top: 16px;
+    padding: 10px 16px;
+    background: transparent;
+    color: #155e68;
+    border: 1px dashed #146a74;
+    border-radius: 6px;
+    font: inherit;
+    cursor: pointer;
+}
 :focus-visible {
     outline: 3px solid #4cb7c7;
     outline-offset: 3px;

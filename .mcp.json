@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "mssql": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "mssql-mcp-server"
+      ],
+      "env": {
+        "MSSQL_CONNECTION_STRING": "Server=localhost;User Id=sa;Password=Hello123#;Database=clean_architect;trustServerCertificate=True;"
+      }
+    }
+  }
+}

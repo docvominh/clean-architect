@@ -1,4 +1,5 @@
 using CleanArchitect.Application.UserAggregate;
+using CleanArchitect.Application.UserAggregate.AspnetIdentity;
 
 namespace CleanArchitect.Api.Auth;
 

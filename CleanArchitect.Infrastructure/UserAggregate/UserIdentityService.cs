@@ -1,17 +1,18 @@
 using CleanArchitect.Application.UserAggregate;
+using CleanArchitect.Application.UserAggregate.AspnetIdentity;
 
 using Microsoft.AspNetCore.Identity;
 
 namespace CleanArchitect.Infrastructure.UserAggregate;
 
-public sealed class UserIdentityService(UserManager<AppUser> users, SignInManager<AppUser> signIn) : IUserIdentityService
+public sealed class UserIdentityService(UserManager<AppUser> users, SignInManager<AppUser> signIn, IUserRepository userRepository) : IUserIdentityService
 {
     public async Task<TokenSubject> CreateAsync(RegisterRequest request, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        var user = new AppUser { UserName = request.Email, Email = request.Email, DisplayName = request.DisplayName };
+        var user = new AppUser { UserName = request.Email, Email = request.Email };
         EnsureSuccess(await users.CreateAsync(user, request.Password));
-        return Subject(user);
+        return new TokenSubject(user.Id, user.Email, user.UserName, null);
     }
 
     public async Task AddToRoleAsync(Guid userId, string role, CancellationToken cancellationToken)
@@ -24,14 +25,14 @@ public sealed class UserIdentityService(UserManager<AppUser> users, SignInManage
     {
         cancellationToken.ThrowIfCancellationRequested();
         var user = await users.FindByEmailAsync(email);
-        return user is null ? null : Subject(user);
+        return user is null ? null : await SubjectAsync(user, cancellationToken);
     }
 
     public async Task<TokenSubject?> FindByIdAsync(Guid userId, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
         var user = await users.FindByIdAsync(userId.ToString());
-        return user is null ? null : Subject(user);
+        return user is null ? null : await SubjectAsync(user, cancellationToken);
     }
 
     public async Task<bool> CheckPasswordAsync(Guid userId, string password, CancellationToken cancellationToken)
@@ -51,9 +52,10 @@ public sealed class UserIdentityService(UserManager<AppUser> users, SignInManage
         return await users.FindByIdAsync(userId.ToString()) ?? throw new UserAuthenticationException();
     }
 
-    private static TokenSubject Subject(AppUser user)
+    private async Task<TokenSubject> SubjectAsync(AppUser user, CancellationToken cancellationToken)
     {
-        return new TokenSubject(user.Id, user.Email, user.UserName, user.DisplayName);
+        var profile = await userRepository.FindAsync(user.Id, cancellationToken);
+        return new TokenSubject(user.Id, user.Email, user.UserName, profile?.DisplayName);
     }
 
     private static void EnsureSuccess(IdentityResult result)

@@ -1,5 +1,9 @@
 using CleanArchitect.Domain;
+using CleanArchitect.Domain.Order;
+using CleanArchitect.Domain.Product;
 using CleanArchitect.Domain.UserAggregate;
+using CleanArchitect.Infrastructure.OrderAggregate;
+using CleanArchitect.Infrastructure.ProductAggregate;
 using CleanArchitect.Infrastructure.UserAggregate;
 
 using Microsoft.AspNetCore.Identity;
@@ -22,6 +26,16 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
 
     public DbSet<RefreshToken> RefreshTokens { get; set; }
 
+    public DbSet<Order> Orders { get; set; }
+
+    public DbSet<Product> Products { get; set; }
+
+    public DbSet<OrderProduct> OrderProducts { get; set; }
+
+    public DbSet<UserAddress> UserAddresses { get; set; }
+
+    public DbSet<User> UserProfiles { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured) optionsBuilder.UseSqlServer();
@@ -33,6 +47,11 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
 
         // modelBuilder.ApplyConfiguration(new MediaEntityConfig());
         modelBuilder.ApplyConfiguration(new RefreshTokenEntityConfig());
+        modelBuilder.ApplyConfiguration(new UserAddressEntityConfig());
+        modelBuilder.ApplyConfiguration(new UserEntityConfig());
+        modelBuilder.ApplyConfiguration(new OrderEntityConfig());
+        modelBuilder.ApplyConfiguration(new ProductEntityConfig());
+        modelBuilder.ApplyConfiguration(new OrderProductEntityConfig());
 
         // modelBuilder.ApplyConfiguration(new PlaylistEntityConfig());
         // modelBuilder.ApplyConfiguration(new PlaylistMediaEntityConfig());

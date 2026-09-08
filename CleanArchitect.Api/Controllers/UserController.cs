@@ -1,6 +1,7 @@
 using System.Security.Claims;
 
 using CleanArchitect.Application.UserAggregate;
+using CleanArchitect.Application.UserAggregate.AspnetIdentity;
 using CleanArchitect.Application.UserAggregate.Command;
 
 using MediatR;

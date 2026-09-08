@@ -1,5 +1,6 @@
 using CleanArchitect.Api.Auth;
 using CleanArchitect.Application.UserAggregate;
+using CleanArchitect.Application.UserAggregate.AspnetIdentity;
 using CleanArchitect.Application.UserAggregate.Command;
 using CleanArchitect.Infrastructure;
 using CleanArchitect.Infrastructure.UserAggregate;
@@ -73,6 +74,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserIdentityService, UserIdentityService>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IRefreshTokenCookie, RefreshTokenCookie>();
 builder.Services.AddScoped<AuthSessionService>();

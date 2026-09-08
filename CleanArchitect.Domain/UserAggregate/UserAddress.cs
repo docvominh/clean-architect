@@ -1,7 +1,9 @@
-namespace CleanArchitect.Domain.Order;
+namespace CleanArchitect.Domain.UserAggregate;
 
-public class Order : BaseEntity
+public class UserAddress : BaseEntity
 {
+    public required Guid UserId { get; set; }
+
     public required string Country { get; init; }
 
     public string? State { get; init; }
@@ -12,9 +14,6 @@ public class Order : BaseEntity
 
     public required string ContactPhoneNumber { get; init; }
 
-    public OrderStatus Status { get; set; }
 
-    public decimal TotalAmount { get; set; }
-
-    public List<OrderProduct> OrderProducts { get; set; } = [];
+    public bool IsDefault { get; set; }
 }

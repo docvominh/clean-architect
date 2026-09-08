@@ -9,10 +9,35 @@
         <input id="email" name="email" type="email" [(ngModel)]="email" required email autocomplete="email" />
         <label for="password">Password</label>
         <input id="password" name="password" type="password" [(ngModel)]="password" required autocomplete="new-password" />
+        <label for="confirmPassword">Confirm password</label>
+        <input id="confirmPassword" name="confirmPassword" type="password" [(ngModel)]="confirmPassword" required autocomplete="new-password" />
+        @if (confirmPassword && confirmPassword !== password) {
+            <p class="error">Passwords do not match.</p>
+        }
+
+        <h2>Shipping addresses</h2>
+        @for (address of addresses; track address.id) {
+            <fieldset class="address-row">
+                <legend>Address {{ $index + 1 }}</legend>
+                <label [for]="'country-' + address.id">Country</label>
+                <input [id]="'country-' + address.id" [name]="'country-' + address.id" [(ngModel)]="address.country" required />
+                <label [for]="'state-' + address.id">State / Province</label>
+                <input [id]="'state-' + address.id" [name]="'state-' + address.id" [(ngModel)]="address.state" />
+                <label [for]="'city-' + address.id">City</label>
+                <input [id]="'city-' + address.id" [name]="'city-' + address.id" [(ngModel)]="address.city" required />
+                <label [for]="'street-' + address.id">Street</label>
+                <input [id]="'street-' + address.id" [name]="'street-' + address.id" [(ngModel)]="address.street" required />
+                <label [for]="'phone-' + address.id">Contact phone number</label>
+                <input [id]="'phone-' + address.id" [name]="'phone-' + address.id" [(ngModel)]="address.contactPhoneNumber" required />
+                <button type="button" class="remove-address" (click)="removeAddress(address.id)">Remove</button>
+            </fieldset>
+        }
+        <button type="button" class="add-address" (click)="addAddress()">+ Add address</button>
+
         @if (error()) {
             <p role="alert" class="error">{{ error() }}</p>
         }
-        <button type="submit" [disabled]="form.invalid || busy()">{{ busy() ? 'Please wait...' : 'Create account' }}</button>
+        <button type="submit" [disabled]="form.invalid || busy() || password !== confirmPassword">{{ busy() ? 'Please wait...' : 'Create account' }}</button>
     </form>
     <p>
         <a routerLink="/login" [queryParams]="{ returnUrl: returnUrl }">

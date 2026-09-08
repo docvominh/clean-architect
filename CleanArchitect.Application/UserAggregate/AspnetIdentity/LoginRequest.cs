@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace CleanArchitect.Application.UserAggregate;
+namespace CleanArchitect.Application.UserAggregate.AspnetIdentity;
 
 public sealed record LoginRequest
 {

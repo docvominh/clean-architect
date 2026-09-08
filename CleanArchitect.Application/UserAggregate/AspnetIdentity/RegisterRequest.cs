@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace CleanArchitect.Application.UserAggregate;
+namespace CleanArchitect.Application.UserAggregate.AspnetIdentity;
 
 public sealed record RegisterRequest
 {
@@ -9,4 +9,6 @@ public sealed record RegisterRequest
     [Required] public required string Password { get; init; }
 
     public string? DisplayName { get; init; }
+
+    public IReadOnlyList<ShippingAddressRequest>? Addresses { get; init; }
 }

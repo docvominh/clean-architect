@@ -3,6 +3,11 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../auth.service';
+import { ShippingAddress } from '../auth.models';
+
+interface AddressRow extends ShippingAddress {
+    readonly id: number;
+}
 
 @Component({
     selector: 'app-register',
@@ -17,16 +22,34 @@ export class RegisterComponent {
     readonly returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') ?? '/';
     email = '';
     password = '';
+    confirmPassword = '';
     displayName = '';
+    addresses: AddressRow[] = [];
+    private nextAddressId = 0;
     readonly busy = signal(false);
     readonly error = signal('');
 
+    addAddress(): void {
+        this.addresses.push({ id: this.nextAddressId++, country: '', state: '', city: '', street: '', contactPhoneNumber: '' });
+    }
+
+    removeAddress(id: number): void {
+        this.addresses = this.addresses.filter(address => address.id !== id);
+    }
+
     async submit(): Promise<void> {
-        if (this.busy()) return;
+        if (this.busy() || this.password !== this.confirmPassword) return;
         this.busy.set(true);
         this.error.set('');
         try {
-            await this.auth.register({ email: this.email, password: this.password, displayName: this.displayName });
+            const addresses: ShippingAddress[] = this.addresses.map(({ country, state, city, street, contactPhoneNumber }) => ({
+                country,
+                state,
+                city,
+                street,
+                contactPhoneNumber,
+            }));
+            await this.auth.register({ email: this.email, password: this.password, displayName: this.displayName, addresses });
             const destination = this.returnUrl.startsWith('/') && !this.returnUrl.startsWith('//') && !this.returnUrl.includes('\\') ? this.returnUrl : '/';
             await this.router.navigateByUrl(destination);
         } catch (error) {

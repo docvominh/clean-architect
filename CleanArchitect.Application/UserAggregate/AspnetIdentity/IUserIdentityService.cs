@@ -1,4 +1,4 @@
-namespace CleanArchitect.Application.UserAggregate;
+namespace CleanArchitect.Application.UserAggregate.AspnetIdentity;
 
 public interface IUserIdentityService
 {

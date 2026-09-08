@@ -1,6 +1,6 @@
 using CleanArchitect.Domain.UserAggregate;
 
-namespace CleanArchitect.Application.UserAggregate;
+namespace CleanArchitect.Application.UserAggregate.AspnetIdentity;
 
 public interface IRefreshTokenRepository
 {

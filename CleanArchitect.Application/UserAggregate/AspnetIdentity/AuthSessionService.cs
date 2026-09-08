@@ -1,6 +1,6 @@
 using CleanArchitect.Domain.UserAggregate;
 
-namespace CleanArchitect.Application.UserAggregate;
+namespace CleanArchitect.Application.UserAggregate.AspnetIdentity;
 
 public sealed class AuthSessionService(
     IUserIdentityService users,
@@ -17,6 +17,7 @@ public sealed class AuthSessionService(
         var refreshToken = tokens.GenerateRefreshToken(user.Id);
         refreshTokens.Add(refreshToken);
         refreshTokenCookie.Write(refreshToken.Token, refreshToken.ExpiresAt);
+
         return (new AuthResponse { AccessToken = accessToken, ExpiresAt = expiresAt }, refreshToken);
     }
 }
