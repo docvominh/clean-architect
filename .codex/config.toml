@@ -1,0 +1,6 @@
+# Project settings migrated from .claude. Skills are discovered in .agents/skills.
+# Personal model and sandbox preferences remain in the user's Codex configuration.
+
+[mcp_servers.binlog]
+command = "dotnet"
+args = ["dnx", "Microsoft.AITools.BinlogMcp", "--yes", "--prerelease"]

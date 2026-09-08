@@ -1,0 +1,8 @@
+# Reusable command permissions from .claude/settings.local.json.
+# Historical scratch paths and certificate commands are intentionally omitted.
+prefix_rule(pattern = ["dotnet"], decision = "allow", match = ["dotnet build", "dotnet test"])
+prefix_rule(pattern = ["pnpm", "exec"], decision = "allow", match = ["pnpm exec tsc --noEmit"])
+prefix_rule(pattern = ["npx", "tsc"], decision = "allow", match = ["npx tsc --noEmit"])
+prefix_rule(pattern = ["npx", "ng"], decision = "allow", match = ["npx ng build"])
+prefix_rule(pattern = ["curl"], decision = "allow", match = ["curl http://localhost:5000"])
+prefix_rule(pattern = ["git", "check-ignore"], decision = "allow", match = ["git check-ignore bin"])

@@ -1,0 +1,101 @@
+[
+  {
+    "plugin": "dotnet@dotnet-agent-skills",
+    "source": "https://github.com/dotnet/skills/tree/6a37d48731ae86a009cf92c4b24796b0ed9f0ea5/plugins/dotnet",
+    "skills": [
+      "setup-local-sdk"
+    ]
+  },
+  {
+    "plugin": "dotnet-data@dotnet-agent-skills",
+    "source": "https://github.com/dotnet/skills/tree/6a37d48731ae86a009cf92c4b24796b0ed9f0ea5/plugins/dotnet-data",
+    "skills": [
+      "create-datadriven-aspnetcore",
+      "optimizing-ef-core-queries"
+    ]
+  },
+  {
+    "plugin": "dotnet-msbuild@dotnet-agent-skills",
+    "source": "https://github.com/dotnet/skills/tree/6a37d48731ae86a009cf92c4b24796b0ed9f0ea5/plugins/dotnet-msbuild",
+    "skills": [
+      "binlog-failure-analysis",
+      "binlog-generation",
+      "build-parallelism",
+      "build-perf-baseline",
+      "build-perf-diagnostics",
+      "check-bin-obj-clash",
+      "copy-to-output-directory",
+      "directory-build-organization",
+      "eval-performance",
+      "extension-points",
+      "including-generated-files",
+      "incremental-build",
+      "item-management",
+      "msbuild-antipatterns",
+      "msbuild-modernization",
+      "msbuild-server",
+      "property-patterns",
+      "resolve-project-references",
+      "target-authoring"
+    ]
+  },
+  {
+    "plugin": "dotnet-upgrade@dotnet-agent-skills",
+    "source": "https://github.com/dotnet/skills/tree/6a37d48731ae86a009cf92c4b24796b0ed9f0ea5/plugins/dotnet-upgrade",
+    "skills": [
+      "dotnet-aot-compat",
+      "migrate-dotnet10-to-dotnet11",
+      "migrate-dotnet8-to-dotnet9",
+      "migrate-dotnet9-to-dotnet10",
+      "migrate-nullable-references",
+      "thread-abort-migration"
+    ]
+  },
+  {
+    "plugin": "dotnet-nuget@dotnet-agent-skills",
+    "source": "https://github.com/dotnet/skills/tree/6a37d48731ae86a009cf92c4b24796b0ed9f0ea5/plugins/dotnet-nuget",
+    "skills": [
+      "convert-to-cpm"
+    ]
+  },
+  {
+    "plugin": "dotnet-template-engine@dotnet-agent-skills",
+    "source": "https://github.com/dotnet/skills/tree/6a37d48731ae86a009cf92c4b24796b0ed9f0ea5/plugins/dotnet-template-engine",
+    "skills": [
+      "template-authoring",
+      "template-comparison",
+      "template-discovery",
+      "template-instantiation",
+      "template-smart-defaults",
+      "template-validation"
+    ]
+  },
+  {
+    "plugin": "dotnet-test@dotnet-agent-skills",
+    "source": "https://github.com/dotnet/skills/tree/6a37d48731ae86a009cf92c4b24796b0ed9f0ea5/plugins/dotnet-test",
+    "skills": [
+      "assertion-quality",
+      "code-testing-agent",
+      "code-testing-extensions",
+      "coverage-analysis",
+      "crap-score",
+      "detect-static-dependencies",
+      "filter-syntax",
+      "find-untested-sources",
+      "generate-testability-wrappers",
+      "grade-tests",
+      "migrate-static-to-wrapper",
+      "mtp-hot-reload",
+      "platform-detection",
+      "run-tests",
+      "scaffold-dotnet-test-project",
+      "test-analysis-extensions",
+      "test-anti-patterns",
+      "test-gap-analysis",
+      "test-smell-detection",
+      "test-tagging",
+      "testability-obstacle",
+      "writing-mstest-tests"
+    ]
+  }
+]
