@@ -34,14 +34,18 @@ public class RefreshTokenCommandHandlerTests
     [Fact]
     public async Task Handler_RefreshToken_ShouldRotateAndSaveBothTokensTogether()
     {
+        // Arrange
         var old = new RefreshToken(Guid.NewGuid(), User.Id, User.Id, "old", DateTimeOffset.UtcNow.AddDays(1));
         cookie.Setup(c => c.Read()).Returns("old");
         refreshTokens.Setup(r => r.FindAsync("old", It.IsAny<CancellationToken>())).ReturnsAsync(old);
         users.Setup(u => u.FindByIdAsync(User.Id, It.IsAny<CancellationToken>())).ReturnsAsync(User);
 
         var handler = new RefreshTokenCommandHandler(users.Object, refreshTokens.Object, Sessions, cookie.Object);
+
+        // Act
         await handler.Handle(new RefreshTokenCommand(), default);
 
+        // Assert
         old.RevokedAt.ShouldNotBeNull();
         old.ReplacedByToken.ShouldBe("new-token");
         refreshTokens.Verify(r => r.Add(It.Is<RefreshToken>(t => t.Token == "new-token")), Times.Once);
@@ -51,13 +55,18 @@ public class RefreshTokenCommandHandlerTests
     [Fact]
     public async Task Handler_RefreshWithRevokedToken_ShouldNotCreateSession()
     {
+        // Arrange
         var old = new RefreshToken(Guid.NewGuid(), User.Id, User.Id, "old", DateTimeOffset.UtcNow.AddDays(1)) { RevokedAt = DateTimeOffset.UtcNow };
         cookie.Setup(c => c.Read()).Returns("old");
         refreshTokens.Setup(r => r.FindAsync("old", It.IsAny<CancellationToken>())).ReturnsAsync(old);
 
         var handler = new RefreshTokenCommandHandler(users.Object, refreshTokens.Object, Sessions, cookie.Object);
 
-        await Should.ThrowAsync<UserAuthenticationException>(() => handler.Handle(new RefreshTokenCommand(), default));
+        // Act
+        Func<Task> act = () => handler.Handle(new RefreshTokenCommand(), default);
+
+        // Assert
+        await Should.ThrowAsync<UserAuthenticationException>(act);
 
         refreshTokens.Verify(r => r.Add(It.IsAny<RefreshToken>()), Times.Never);
         refreshTokens.Verify(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);

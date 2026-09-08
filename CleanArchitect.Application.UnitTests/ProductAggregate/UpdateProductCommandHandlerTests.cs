@@ -25,14 +25,18 @@ public class UpdateProductCommandHandlerTests
     [Fact]
     public async Task Handler_UpdateProduct_ShouldApplyChangesAndRecordUpdater()
     {
+        // Arrange
         var creator = Guid.NewGuid();
         var updater = Guid.NewGuid();
         var product = new Product(Guid.NewGuid(), creator, "Old Name", "Old Manufacturer", 1m);
         products.Setup(p => p.FindAsync(product.Id, It.IsAny<CancellationToken>())).ReturnsAsync(product);
 
         var handler = new UpdateProductCommandHandler(products.Object);
+
+        // Act
         var result = await handler.Handle(new UpdateProductCommand(product.Id, Request("New Name", 5m), updater), default);
 
+        // Assert
         result.Name.ShouldBe("New Name");
         result.Price.ShouldBe(5m);
         product.UpdateBy.ShouldBe(updater);
@@ -42,10 +46,15 @@ public class UpdateProductCommandHandlerTests
     [Fact]
     public async Task Handler_UpdateMissingProduct_ShouldThrowNotFoundException()
     {
+        // Arrange
         products.Setup(p => p.FindAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync((Product?)null);
         var handler = new UpdateProductCommandHandler(products.Object);
 
-        await Should.ThrowAsync<NotFoundException>(() => handler.Handle(new UpdateProductCommand(Guid.NewGuid(), Request(), Guid.NewGuid()), default));
+        // Act
+        Func<Task> act = () => handler.Handle(new UpdateProductCommand(Guid.NewGuid(), Request(), Guid.NewGuid()), default);
+
+        // Assert
+        await Should.ThrowAsync<NotFoundException>(act);
 
         products.Verify(p => p.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
     }

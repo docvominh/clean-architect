@@ -17,6 +17,7 @@ public class GetProductsQueryHandlerTests
     [Fact]
     public async Task Handler_GetAllProducts_ShouldMapEveryProduct()
     {
+        // Arrange
         var list = new List<Product>
         {
             new(Guid.NewGuid(), Guid.NewGuid(), "Widget", "Acme", 9.99m),
@@ -25,8 +26,10 @@ public class GetProductsQueryHandlerTests
         products.Setup(p => p.GetAllAsync(It.IsAny<CancellationToken>())).ReturnsAsync(list);
         var handler = new GetProductsQueryHandler(products.Object);
 
+        // Act
         var result = await handler.Handle(new GetProductsQuery(), default);
 
+        // Assert
         result.Count.ShouldBe(2);
         result.Select(r => r.Name).ShouldBe(["Widget", "Gadget"]);
     }
@@ -34,11 +37,14 @@ public class GetProductsQueryHandlerTests
     [Fact]
     public async Task Handler_GetAllProductsWhenNoneExist_ShouldReturnEmptyList()
     {
+        // Arrange
         products.Setup(p => p.GetAllAsync(It.IsAny<CancellationToken>())).ReturnsAsync([]);
         var handler = new GetProductsQueryHandler(products.Object);
 
+        // Act
         var result = await handler.Handle(new GetProductsQuery(), default);
 
+        // Assert
         result.ShouldBeEmpty();
     }
 }

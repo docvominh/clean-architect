@@ -24,11 +24,14 @@ public class CreateProductCommandHandlerTests
     [Fact]
     public async Task Handler_CreateProduct_ShouldAddProductOwnedByCreator()
     {
+        // Arrange
         var createdBy = Guid.NewGuid();
         var handler = new CreateProductCommandHandler(products.Object);
 
+        // Act
         var result = await handler.Handle(new CreateProductCommand(Request(), createdBy), default);
 
+        // Assert
         products.Verify(p => p.Add(It.Is<Product>(x =>
             x.Name == "Widget" && x.Manufacturer == "Acme" && x.Price == 9.99m && x.CreateBy == createdBy)), Times.Once);
         products.Verify(p => p.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);

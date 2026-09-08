@@ -34,13 +34,18 @@ public class LoginCommandHandlerTests
     [Fact]
     public async Task Handler_LoginWithInvalidCredentials_ShouldNotIssueTokens()
     {
+        // Arrange
         users.Setup(u => u.FindByEmailAsync("user@example.com", It.IsAny<CancellationToken>())).ReturnsAsync(User);
         users.Setup(u => u.CheckPasswordAsync(User.Id, "wrong", It.IsAny<CancellationToken>())).ReturnsAsync(false);
 
         var handler = new LoginCommandHandler(users.Object, Sessions, refreshTokens.Object);
 
-        await Should.ThrowAsync<UserAuthenticationException>(() => handler.Handle(
-            new LoginCommand(new LoginRequest { Email = "user@example.com", Password = "wrong" }), default));
+        // Act
+        Func<Task> act = () => handler.Handle(
+            new LoginCommand(new LoginRequest { Email = "user@example.com", Password = "wrong" }), default);
+
+        // Assert
+        await Should.ThrowAsync<UserAuthenticationException>(act);
 
         refreshTokens.Verify(r => r.Add(It.IsAny<RefreshToken>()), Times.Never);
         refreshTokens.Verify(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);

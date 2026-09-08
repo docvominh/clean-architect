@@ -35,14 +35,18 @@ public class RegisterCommandHandlerTests
     [Fact]
     public async Task Handler_Register_ShouldAssignUserRoleAndPersistSession()
     {
+        // Arrange
         users.Setup(u => u.CreateAsync(It.IsAny<RegisterRequest>(), It.IsAny<CancellationToken>())).ReturnsAsync(User);
 
         var handler = new RegisterCommandHandler(users.Object, userRepository.Object, Sessions, refreshTokens.Object);
+
+        // Act
         var result = await handler.Handle(
             new RegisterCommand(
                 new RegisterRequest
                     { Email = "user@example.com", Password = "Password123!", DisplayName = "Test User" }), default);
 
+        // Assert
         users.Verify(u => u.AddToRoleAsync(User.Id, "User", It.IsAny<CancellationToken>()), Times.Once);
         userRepository.Verify(r => r.Add(It.Is<Domain.UserAggregate.User>(u =>
             u.Id == User.Id && u.DisplayName == "Test User" && u.Addresses.Count == 0
@@ -57,9 +61,12 @@ public class RegisterCommandHandlerTests
     [Fact]
     public async Task Handler_RegisterWithAddresses_ShouldMarkOnlyFirstAddressAsDefault()
     {
+        // Arrange
         users.Setup(u => u.CreateAsync(It.IsAny<RegisterRequest>(), It.IsAny<CancellationToken>())).ReturnsAsync(User);
 
         var handler = new RegisterCommandHandler(users.Object, userRepository.Object, Sessions, refreshTokens.Object);
+
+        // Act
         await handler.Handle(
             new RegisterCommand(
                 new RegisterRequest
@@ -73,6 +80,7 @@ public class RegisterCommandHandlerTests
                     ],
                 }), default);
 
+        // Assert
         userRepository.Verify(r => r.Add(It.Is<Domain.UserAggregate.User>(u =>
             u.Addresses.Count == 2
             && u.Addresses[0].UserId == User.Id && u.Addresses[0].City == "Springfield" && u.Addresses[0].IsDefault
@@ -84,14 +92,19 @@ public class RegisterCommandHandlerTests
     [Fact]
     public async Task Handler_RegisterWithRoleAssignmentFailure_ShouldNotIssueTokens()
     {
+        // Arrange
         users.Setup(u => u.CreateAsync(It.IsAny<RegisterRequest>(), It.IsAny<CancellationToken>())).ReturnsAsync(User);
         users.Setup(u => u.AddToRoleAsync(User.Id, "User", It.IsAny<CancellationToken>()))
             .ThrowsAsync(new UserValidationException(new Dictionary<string, string[]> { ["Role"] = ["Role assignment failed"] }));
 
         var handler = new RegisterCommandHandler(users.Object, userRepository.Object, Sessions, refreshTokens.Object);
 
-        await Should.ThrowAsync<UserValidationException>(() => handler.Handle(
-            new RegisterCommand(new RegisterRequest { Email = "user@example.com", Password = "Password123!" }), default));
+        // Act
+        Func<Task> act = () => handler.Handle(
+            new RegisterCommand(new RegisterRequest { Email = "user@example.com", Password = "Password123!" }), default);
+
+        // Assert
+        await Should.ThrowAsync<UserValidationException>(act);
 
         userRepository.Verify(r => r.Add(It.IsAny<Domain.UserAggregate.User>()), Times.Never);
         refreshTokens.Verify(r => r.Add(It.IsAny<RefreshToken>()), Times.Never);

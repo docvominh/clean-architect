@@ -49,7 +49,8 @@
 - Domain project entities: only a constructor is allowed to set property values. No public setters — use `init` (or private `set`) plus a constructor that takes the required fields, so an entity can never exist in an invalid state.
 
 ## Test
-- Library: xUnit, Shoudly, Moq
+- Library: xUnit, Shouldly, Moq
 - Project has unit tests (*.UnitTests) and integration tests (*.IntegrationTests).
 - Always create test cases for the generated code both positive and negative.
 - Use Shouldly for test assertions, not xUnit's Assert.
+- Structure every test using Arrange, Act, Assert (AAA), with explicit `// Arrange`, `// Act`, and `// Assert` comments in that order. Put setup under Arrange, the behavior being tested under Act, and outcome checks under Assert.
