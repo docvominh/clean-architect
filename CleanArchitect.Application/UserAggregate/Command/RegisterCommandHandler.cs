@@ -33,6 +33,8 @@ public class RegisterCommandHandler(
                 City = address.City,
                 Street = address.Street,
                 ContactPhoneNumber = address.ContactPhoneNumber,
+                CreateBy = subject.Id,
+                UpdateBy = subject.Id,
             }).ToList(),
         };
         await userRepository.Add(user);

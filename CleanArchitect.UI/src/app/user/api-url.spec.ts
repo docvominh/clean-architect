@@ -3,8 +3,12 @@ import { apiUrl, resolveApiRequest } from './api-url';
 
 describe('API URL configuration', () => {
     const original = environment.apiBaseUrl;
-    beforeEach(() => { environment.apiBaseUrl = 'https://localhost:7189/'; });
-    afterEach(() => { environment.apiBaseUrl = original; });
+    beforeEach(() => {
+        environment.apiBaseUrl = 'https://localhost:7189/';
+    });
+    afterEach(() => {
+        environment.apiBaseUrl = original;
+    });
 
     it('joins the configured base without duplicate slashes', () => {
         expect(apiUrl('/api/auth/login')).toBe('https://localhost:7189/api/auth/login');

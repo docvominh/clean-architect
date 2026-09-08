@@ -13,9 +13,6 @@
         <button type="submit" [disabled]="form.invalid || busy()">{{ busy() ? 'Please wait...' : 'Sign in' }}</button>
     </form>
     <p>
-        <a routerLink="/register" [queryParams]="{ returnUrl: returnUrl }">
-            New here? Create an account
-        </a>
+        <a routerLink="/register" [queryParams]="{ returnUrl: returnUrl }"> New here? Create an account </a>
     </p>
 </main>
-

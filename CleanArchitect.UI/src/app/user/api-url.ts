@@ -13,6 +13,5 @@ export function resolveApiRequest(url: string): string | null {
     } catch {
         return null;
     }
-    return target.origin === base.origin && target.pathname.startsWith(base.pathname)
-        ? candidate : null;
+    return target.origin === base.origin && target.pathname.startsWith(base.pathname) ? candidate : null;
 }

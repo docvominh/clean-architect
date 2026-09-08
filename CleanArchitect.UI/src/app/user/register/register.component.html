@@ -40,9 +40,6 @@
         <button type="submit" [disabled]="form.invalid || busy() || password !== confirmPassword">{{ busy() ? 'Please wait...' : 'Create account' }}</button>
     </form>
     <p>
-        <a routerLink="/login" [queryParams]="{ returnUrl: returnUrl }">
-            Already have an account? Sign in
-        </a>
+        <a routerLink="/login" [queryParams]="{ returnUrl: returnUrl }"> Already have an account? Sign in </a>
     </p>
 </main>
-

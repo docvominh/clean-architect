@@ -31,9 +31,14 @@ export class LoginComponent {
         } catch (error) {
             const body = error instanceof HttpErrorResponse ? error.error : null;
             const messages = body?.errors
-                ? Object.values(body.errors).flat().filter(value => typeof value === 'string')
+                ? Object.values(body.errors)
+                      .flat()
+                      .filter(value => typeof value === 'string')
                 : [];
-            this.error.set(messages.join(' ') || (error instanceof HttpErrorResponse && error.status === 401 ? 'Incorrect email or password.' : 'Unable to sign in. Please try again.'));
+            this.error.set(
+                messages.join(' ') ||
+                    (error instanceof HttpErrorResponse && error.status === 401 ? 'Incorrect email or password.' : 'Unable to sign in. Please try again.'),
+            );
         } finally {
             this.busy.set(false);
         }

@@ -30,7 +30,9 @@ export class AuthService {
     private async authenticate(path: string, request: LoginRequest | RegisterRequest): Promise<void> {
         await this.initialize();
         const generation = ++this.generation;
-        const response = await firstValueFrom(this.http.post<AuthResponse>(apiUrl('/api/auth/' + path), request, { withCredentials: true }).pipe(timeout(15000)));
+        const response = await firstValueFrom(
+            this.http.post<AuthResponse>(apiUrl('/api/auth/' + path), request, { withCredentials: true }).pipe(timeout(15000)),
+        );
         if (generation === this.generation) this.accept(response);
     }
 

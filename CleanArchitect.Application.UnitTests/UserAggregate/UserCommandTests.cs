@@ -92,7 +92,9 @@ public class UserCommandTests
         userRepository.Verify(r => r.Add(It.Is<Domain.UserAggregate.User>(u =>
             u.Addresses.Count == 2
             && u.Addresses[0].UserId == User.Id && u.Addresses[0].City == "Springfield" && u.Addresses[0].IsDefault
-            && u.Addresses[1].UserId == User.Id && u.Addresses[1].City == "Shelbyville" && !u.Addresses[1].IsDefault)), Times.Once);
+            && u.Addresses[0].CreateBy == User.Id && u.Addresses[0].UpdateBy == User.Id
+            && u.Addresses[1].UserId == User.Id && u.Addresses[1].City == "Shelbyville" && !u.Addresses[1].IsDefault
+            && u.Addresses[1].CreateBy == User.Id && u.Addresses[1].UpdateBy == User.Id)), Times.Once);
     }
 
     [Fact]

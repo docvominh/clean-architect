@@ -55,7 +55,9 @@ export class RegisterComponent {
         } catch (error) {
             const body = error instanceof HttpErrorResponse ? error.error : null;
             const messages = body?.errors
-                ? Object.values(body.errors).flat().filter(value => typeof value === 'string')
+                ? Object.values(body.errors)
+                      .flat()
+                      .filter(value => typeof value === 'string')
                 : [];
             this.error.set(messages.join(' ') || 'Unable to create your account. Please try again.');
         } finally {
