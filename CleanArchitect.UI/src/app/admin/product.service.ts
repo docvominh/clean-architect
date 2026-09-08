@@ -23,4 +23,8 @@ export class ProductService {
     update(id: string, request: ProductRequest): Promise<Product> {
         return firstValueFrom(this.http.put<Product>(apiUrl(`/api/products/${id}`), request));
     }
+
+    remove(id: string): Promise<void> {
+        return firstValueFrom(this.http.delete<void>(apiUrl(`/api/products/${id}`)));
+    }
 }

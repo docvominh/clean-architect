@@ -31,4 +31,15 @@ export class ProductListComponent {
             this.loading.set(false);
         }
     }
+
+    async delete(product: Product): Promise<void> {
+        if (!confirm(`Delete "${product.name}"? This cannot be undone.`)) return;
+        this.error.set('');
+        try {
+            await this.productService.remove(product.id);
+            this.products.set(this.products().filter(p => p.id !== product.id));
+        } catch {
+            this.error.set(`Unable to delete "${product.name}". Please try again.`);
+        }
+    }
 }

@@ -143,10 +143,18 @@ fieldset {
     cursor: pointer;
 }
 .button-link {
+    width: auto;
+    margin-top: 0;
     padding: 6px 12px;
     background: transparent;
     color: #155e68;
     border: 1px solid #dce5e9;
+}
+.button-link.danger {
+    color: #a22727;
+}
+.button-link + .button-link {
+    margin-left: 8px;
 }
 table {
     width: 100%;

@@ -30,7 +30,10 @@
                         <td>{{ product.manufacturer }}</td>
                         <td>{{ product.price | number: '1.2-2' }}</td>
                         <td>{{ product.priceDiscount != null ? (product.priceDiscount | number: '1.2-2') : '—' }}</td>
-                        <td><a class="button-link" [routerLink]="['/admin/product', product.id, 'edit']">Edit</a></td>
+                        <td>
+                            <a class="button-link" [routerLink]="['/admin/product', product.id, 'edit']">Edit</a>
+                            <button type="button" class="button-link danger" (click)="delete(product)">Delete</button>
+                        </td>
                     </tr>
                 }
             </tbody>
