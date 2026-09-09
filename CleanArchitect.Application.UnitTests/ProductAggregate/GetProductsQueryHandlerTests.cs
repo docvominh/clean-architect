@@ -30,8 +30,8 @@ public class GetProductsQueryHandlerTests
         var result = await handler.Handle(new GetProductsQuery(), default);
 
         // Assert
-        result.Count.ShouldBe(2);
-        result.Select(r => r.Name).ShouldBe(["Widget", "Gadget"]);
+        result.Products.Count.ShouldBe(2);
+        result.Products.Select(r => r.Name).ShouldBe(["Widget", "Gadget"]);
     }
 
     [Fact]
@@ -45,6 +45,6 @@ public class GetProductsQueryHandlerTests
         var result = await handler.Handle(new GetProductsQuery(), default);
 
         // Assert
-        result.ShouldBeEmpty();
+        result.Products.ShouldBeEmpty();
     }
 }

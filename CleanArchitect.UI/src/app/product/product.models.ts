@@ -8,6 +8,10 @@ export interface Product {
     priceDiscount?: number;
 }
 
+export interface ProductsResponse {
+    products: Product[];
+}
+
 export interface ProductRequest {
     name: string;
     manufacturer: string;

@@ -1,12 +1,13 @@
+using CleanArchitect.Application.ProductAggregate.Query;
 using CleanArchitect.Domain.ProductAggregate;
 
 using MediatR;
 
 namespace CleanArchitect.Application.ProductAggregate.Command;
 
-public sealed class CreateProductCommandHandler(IProductRepository products) : IRequestHandler<CreateProductCommand, ProductResponse>
+public sealed class CreateProductCommandHandler(IProductRepository products) : IRequestHandler<CreateProductCommand, ProductDto>
 {
-    public async Task<ProductResponse> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+    public async Task<ProductDto> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
         var product = new Product(
             Guid.NewGuid(),
@@ -21,6 +22,6 @@ public sealed class CreateProductCommandHandler(IProductRepository products) : I
         products.Add(product);
         await products.SaveChangesAsync(cancellationToken);
 
-        return ProductResponse.From(product);
+        return ProductDto.From(product);
     }
 }

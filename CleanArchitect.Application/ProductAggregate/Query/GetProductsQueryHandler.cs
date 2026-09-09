@@ -2,12 +2,12 @@ using MediatR;
 
 namespace CleanArchitect.Application.ProductAggregate.Query;
 
-public sealed class GetProductsQueryHandler(IProductRepository products) : IRequestHandler<GetProductsQuery, List<ProductResponse>>
+public sealed class GetProductsQueryHandler(IProductRepository productRepository) : IRequestHandler<GetProductsQuery, ProductsDto>
 {
-    public async Task<List<ProductResponse>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
+    public async Task<ProductsDto> Handle(GetProductsQuery request, CancellationToken cancellationToken)
     {
-        var all = await products.GetAllAsync(cancellationToken);
+        var products = await productRepository.GetAllAsync(cancellationToken);
 
-        return all.Select(ProductResponse.From).ToList();
+        return new ProductsDto(products.Select(ProductDto.From).ToList());
     }
 }

@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
-import { Product, ProductRequest } from './product.models';
+import { firstValueFrom, map } from 'rxjs';
+import { Product, ProductRequest, ProductsResponse } from './product.models';
 import { apiUrl } from '../user/api-url';
 
 @Injectable({ providedIn: 'root' })
@@ -9,7 +9,9 @@ export class ProductService {
     private readonly http = inject(HttpClient);
 
     list(): Promise<Product[]> {
-        return firstValueFrom(this.http.get<Product[]>(apiUrl('/api/products')));
+        return firstValueFrom(
+            this.http.get<ProductsResponse>(apiUrl('/api/products')).pipe(map(response => response.products)),
+        );
     }
 
     getById(id: string): Promise<Product> {

@@ -17,20 +17,20 @@ namespace CleanArchitect.Api.Controllers;
 public class ProductController(ISender sender) : ControllerBase
 {
     [HttpGet]
-    public Task<List<ProductResponse>> GetAll(CancellationToken cancellationToken)
+    public Task<ProductsDto> GetAll(CancellationToken cancellationToken)
     {
         return sender.Send(new GetProductsQuery(), cancellationToken);
     }
 
     [HttpGet("{id:guid}")]
-    public Task<ProductResponse> GetById(Guid id, CancellationToken cancellationToken)
+    public Task<ProductDto> GetById(Guid id, CancellationToken cancellationToken)
     {
         return sender.Send(new GetProductByIdQuery(id), cancellationToken);
     }
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
-    public Task<ProductResponse> Create(ProductRequest request, CancellationToken cancellationToken)
+    public Task<ProductDto> Create(ProductRequest request, CancellationToken cancellationToken)
     {
         var createdBy = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
@@ -39,7 +39,7 @@ public class ProductController(ISender sender) : ControllerBase
 
     [HttpPut("{id:guid}")]
     [Authorize(Roles = "Admin")]
-    public Task<ProductResponse> Update(Guid id, ProductRequest request, CancellationToken cancellationToken)
+    public Task<ProductDto> Update(Guid id, ProductRequest request, CancellationToken cancellationToken)
     {
         var updatedBy = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 

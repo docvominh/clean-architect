@@ -1,10 +1,12 @@
+using CleanArchitect.Application.ProductAggregate.Query;
+
 using MediatR;
 
 namespace CleanArchitect.Application.ProductAggregate.Command;
 
-public sealed class UpdateProductCommandHandler(IProductRepository products) : IRequestHandler<UpdateProductCommand, ProductResponse>
+public sealed class UpdateProductCommandHandler(IProductRepository products) : IRequestHandler<UpdateProductCommand, ProductDto>
 {
-    public async Task<ProductResponse> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+    public async Task<ProductDto> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
         var product = await products.FindAsync(request.Id, cancellationToken)
             ?? throw new NotFoundException($"Product '{request.Id}' was not found.");
@@ -20,6 +22,6 @@ public sealed class UpdateProductCommandHandler(IProductRepository products) : I
 
         await products.SaveChangesAsync(cancellationToken);
 
-        return ProductResponse.From(product);
+        return ProductDto.From(product);
     }
 }
