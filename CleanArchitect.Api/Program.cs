@@ -1,10 +1,14 @@
+using Azure.Storage.Blobs;
+
 using CleanArchitect.Api;
 using CleanArchitect.Application.ProductAggregate;
+using CleanArchitect.Application.StorageAggregate;
 using CleanArchitect.Application.UserAggregate;
 using CleanArchitect.Application.UserAggregate.AspnetIdentity;
 using CleanArchitect.Application.UserAggregate.Command;
 using CleanArchitect.Infrastructure;
 using CleanArchitect.Infrastructure.ProductAggregate;
+using CleanArchitect.Infrastructure.StorageAggregate;
 using CleanArchitect.Infrastructure.UserAggregate;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -78,6 +82,8 @@ builder.Services.AddScoped<IUserIdentityService, UserIdentityService>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddSingleton(new BlobServiceClient(builder.Configuration.GetConnectionString("AzureBlobStorage")));
+builder.Services.AddScoped<IStorageService, AzureBlobService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IRefreshTokenCookie, RefreshTokenCookie>();
 builder.Services.AddScoped<AuthSessionService>();
@@ -137,6 +143,7 @@ builder.Services.AddSwaggerGen(options =>
 var app = builder.Build();
 
 await app.SetupAdminUserAsync();
+await app.SetupStorageAsync();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

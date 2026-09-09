@@ -18,8 +18,14 @@
             <label for="priceDiscount">Discounted price</label>
             <input id="priceDiscount" name="priceDiscount" type="number" min="0" step="0.01" [(ngModel)]="priceDiscount" />
 
-            <label for="imageUrl">Image URL</label>
-            <input id="imageUrl" name="imageUrl" [(ngModel)]="imageUrl" />
+            <label for="image">Image</label>
+            @if (previewUrl()) {
+                <img [src]="previewUrl()" alt="Product image preview" class="image-preview" />
+            }
+            <input id="image" name="image" type="file" accept="image/png,image/jpeg,image/webp,image/gif" [disabled]="uploading()" (change)="onFileSelected($event)" />
+            @if (uploading()) {
+                <p>Uploading image...</p>
+            }
 
             <label for="description">Description</label>
             <input id="description" name="description" [(ngModel)]="description" />
@@ -27,7 +33,7 @@
             @if (error()) {
                 <p role="alert" class="error">{{ error() }}</p>
             }
-            <button type="submit" [disabled]="form.invalid || busy()">{{ busy() ? 'Please wait...' : isEdit ? 'Save changes' : 'Create product' }}</button>
+            <button type="submit" [disabled]="form.invalid || busy() || uploading()">{{ busy() ? 'Please wait...' : isEdit ? 'Save changes' : 'Create product' }}</button>
         </form>
     }
     <p>

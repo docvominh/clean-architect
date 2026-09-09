@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ProductService } from '../product.service';
+import { StorageService } from '../storage.service';
 
 @Component({
     selector: 'app-product',
@@ -12,6 +13,7 @@ import { ProductService } from '../product.service';
 })
 export class ProductComponent {
     private readonly productService = inject(ProductService);
+    private readonly storageService = inject(StorageService);
     private readonly route = inject(ActivatedRoute);
     private readonly router = inject(Router);
     readonly productId = this.route.snapshot.paramMap.get('id');
@@ -24,7 +26,9 @@ export class ProductComponent {
     imageUrl = '';
     description = '';
 
+    readonly previewUrl = signal<string | null>(null);
     readonly loading = signal(this.isEdit);
+    readonly uploading = signal(false);
     readonly busy = signal(false);
     readonly error = signal('');
 
@@ -41,6 +45,7 @@ export class ProductComponent {
             this.priceDiscount = product.priceDiscount ?? null;
             this.imageUrl = product.imageUrl ?? '';
             this.description = product.description ?? '';
+            this.previewUrl.set(product.imageUrl ?? null);
         } catch {
             this.error.set('Unable to load this product.');
         } finally {
@@ -48,8 +53,28 @@ export class ProductComponent {
         }
     }
 
+    async onFileSelected(event: Event): Promise<void> {
+        const input = event.target as HTMLInputElement;
+        const file = input.files?.[0] ?? null;
+        if (!file) return;
+
+        this.uploading.set(true);
+        this.error.set('');
+        try {
+            const url = await this.storageService.upload(file);
+            this.imageUrl = url;
+            this.previewUrl.set(url);
+        } catch (error) {
+            const body = error instanceof HttpErrorResponse ? error.error : null;
+            this.error.set((typeof body === 'string' ? body : '') || 'Unable to upload this image. Please try again.');
+            input.value = '';
+        } finally {
+            this.uploading.set(false);
+        }
+    }
+
     async submit(): Promise<void> {
-        if (this.busy()) return;
+        if (this.busy() || this.uploading()) return;
         this.busy.set(true);
         this.error.set('');
         try {
