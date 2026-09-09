@@ -8,6 +8,7 @@ import { adminGuard } from './admin/admin.guard';
 import { ProductListComponent } from './admin/product-list/product-list.component';
 import { ProductComponent } from './admin/product/product.component';
 import { CheckoutComponent } from './cart/checkout.component';
+import { OrderHistoryComponent } from './cart/order-history.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -16,6 +17,7 @@ export const routes: Routes = [
     { path: 'admin/product/new', component: ProductComponent, canActivate: [authGuard, adminGuard] },
     { path: 'admin/product/:id/edit', component: ProductComponent, canActivate: [authGuard, adminGuard] },
     { path: 'cart', component: CheckoutComponent, canActivate: [authGuard] },
+    { path: 'orders', component: OrderHistoryComponent, canActivate: [authGuard] },
     { path: '', pathMatch: 'full', component: HomeComponent, canActivate: [authGuard] },
-    { path: '**', redirectTo: '' },
+    { path: '**', redirectTo: '' }
 ];

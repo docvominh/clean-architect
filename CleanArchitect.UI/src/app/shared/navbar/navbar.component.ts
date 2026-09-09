@@ -14,10 +14,15 @@ export class NavbarComponent {
     readonly cart = inject(CartService);
     private readonly router = inject(Router);
     readonly menuOpen = signal(false);
+    readonly userMenuOpen = signal(false);
     readonly busy = signal(false);
 
     toggleMenu(): void {
         this.menuOpen.update(open => !open);
+    }
+
+    toggleUserMenu(): void {
+        this.userMenuOpen.update(open => !open);
     }
 
     async logout(): Promise<void> {
@@ -28,6 +33,7 @@ export class NavbarComponent {
         } finally {
             this.busy.set(false);
             this.menuOpen.set(false);
+            this.userMenuOpen.set(false);
             await this.router.navigateByUrl('/login');
         }
     }

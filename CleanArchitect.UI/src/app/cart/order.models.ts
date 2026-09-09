@@ -23,5 +23,10 @@ export interface OrderResponse {
     id: string;
     status: string;
     totalAmount: number;
+    createdAt: string;
     products: OrderProductResponse[];
+}
+
+export interface OrdersResponse {
+    orders: OrderResponse[];
 }
