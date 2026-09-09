@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, HostListener, inject, signal } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ProductService } from '../product.service';
@@ -32,14 +32,32 @@ export class ProductListComponent {
         }
     }
 
-    async delete(product: Product): Promise<void> {
-        if (!confirm(`Delete "${product.name}"? This cannot be undone.`)) return;
+    readonly pendingDelete = signal<Product | null>(null);
+
+    delete(product: Product): void {
+        this.pendingDelete.set(product);
+    }
+
+    cancelDelete(): void {
+        this.pendingDelete.set(null);
+    }
+
+    @HostListener('document:keydown.escape')
+    onEscape(): void {
+        this.cancelDelete();
+    }
+
+    async confirmDelete(): Promise<void> {
+        const product = this.pendingDelete();
+        if (!product) return;
         this.error.set('');
         try {
             await this.productService.remove(product.id);
             this.products.set(this.products().filter(p => p.id !== product.id));
         } catch {
             this.error.set(`Unable to delete "${product.name}". Please try again.`);
+        } finally {
+            this.pendingDelete.set(null);
         }
     }
 }

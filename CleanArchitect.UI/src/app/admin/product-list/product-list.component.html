@@ -1,42 +1,71 @@
-<main class="admin-page">
-    <div class="toolbar">
-        <h1>Products</h1>
-        <a class="button" routerLink="/admin/product/new">+ New Product</a>
-    </div>
+<section class="section">
+    <div class="container">
+        <div class="level">
+            <div class="level-left">
+                <h1 class="title">Products</h1>
+            </div>
+            <div class="level-right">
+                <a class="button is-link" routerLink="/admin/product/new">+ New Product</a>
+            </div>
+        </div>
 
-    @if (error()) {
-        <p role="alert" class="error">{{ error() }}</p>
-    }
+        @if (error()) {
+            <div class="notification is-danger" role="alert">{{ error() }}</div>
+        }
 
-    @if (loading()) {
-        <p>Loading...</p>
-    } @else if (products().length === 0) {
-        <p>No products yet.</p>
-    } @else {
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Manufacturer</th>
-                    <th>Price</th>
-                    <th>Discount</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @for (product of products(); track product.id) {
+        @if (loading()) {
+            <p>Loading...</p>
+        } @else if (products().length === 0) {
+            <p>No products yet.</p>
+        } @else {
+            <table class="table is-fullwidth is-striped">
+                <thead>
                     <tr>
-                        <td>{{ product.name }}</td>
-                        <td>{{ product.manufacturer }}</td>
-                        <td>{{ product.price | number: '1.2-2' }}</td>
-                        <td>{{ product.priceDiscount != null ? (product.priceDiscount | number: '1.2-2') : '—' }}</td>
-                        <td>
-                            <a class="button-link" [routerLink]="['/admin/product', product.id, 'edit']">Edit</a>
-                            <button type="button" class="button-link danger" (click)="delete(product)">Delete</button>
-                        </td>
+                        <th>Name</th>
+                        <th>Manufacturer</th>
+                        <th>Price</th>
+                        <th>Discount</th>
+                        <th></th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    }
-</main>
+                </thead>
+                <tbody>
+                    @for (product of products(); track product.id) {
+                        <tr>
+                            <td>{{ product.name }}</td>
+                            <td>{{ product.manufacturer }}</td>
+                            <td>{{ product.price | number: '1.2-2' }}</td>
+                            <td>{{ product.priceDiscount != null ? (product.priceDiscount | number: '1.2-2') : '—' }}</td>
+                            <td>
+                                <div class="buttons are-small">
+                                    <a class="button is-info is-light" [routerLink]="['/admin/product', product.id, 'edit']">Edit</a>
+                                    <button type="button" class="button is-danger is-light" (click)="delete(product)">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+        @if (pendingDelete(); as product) {
+            <div class="modal is-active">
+                <div class="modal-background" (click)="cancelDelete()"></div>
+                <div class="modal-card">
+                    <header class="modal-card-head">
+                        <p class="modal-card-title">Delete product</p>
+                        <button type="button" class="delete" aria-label="close" (click)="cancelDelete()"></button>
+                    </header>
+                    <section class="modal-card-body">
+                        <p>Delete "{{ product.name }}"? This cannot be undone.</p>
+                    </section>
+                    <footer class="modal-card-foot">
+                        <div class="buttons">
+                            <button type="button" class="button is-danger" (click)="confirmDelete()">Delete</button>
+                            <button type="button" class="button" (click)="cancelDelete()">Cancel</button>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        }
+    </div>
+</section>

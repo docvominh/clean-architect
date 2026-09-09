@@ -1,45 +1,141 @@
-<main class="auth-card">
-    <p class="eyebrow">CLEAN ARCHITECT</p>
-    <h1>Create your account</h1>
-    <p>Enter your details to get started.</p>
-    <form #form="ngForm" (ngSubmit)="submit()">
-        <label for="displayName">Display name</label>
-        <input id="displayName" name="displayName" [(ngModel)]="displayName" autocomplete="name" />
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" [(ngModel)]="email" required email autocomplete="email" />
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" [(ngModel)]="password" required autocomplete="new-password" />
-        <label for="confirmPassword">Confirm password</label>
-        <input id="confirmPassword" name="confirmPassword" type="password" [(ngModel)]="confirmPassword" required autocomplete="new-password" />
-        @if (confirmPassword && confirmPassword !== password) {
-            <p class="error">Passwords do not match.</p>
-        }
+<section class="section">
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-half">
+                <div class="box">
+                    <p class="heading">Clean Architect</p>
+                    <h1 class="title">Create your account</h1>
+                    <p class="subtitle">Enter your details to get started.</p>
+                    <form #form="ngForm" (ngSubmit)="submit()">
+                        <div class="field">
+                            <label class="label" for="displayName">Display name</label>
+                            <div class="control">
+                                <input class="input" id="displayName" name="displayName" [(ngModel)]="displayName" autocomplete="name" />
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="email">Email</label>
+                            <div class="control">
+                                <input class="input" id="email" name="email" type="email" [(ngModel)]="email" required email autocomplete="email" />
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="password">Password</label>
+                            <div class="control">
+                                <input
+                                    class="input"
+                                    id="password"
+                                    name="password"
+                                    type="password"
+                                    [(ngModel)]="password"
+                                    required
+                                    autocomplete="new-password"
+                                />
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="confirmPassword">Confirm password</label>
+                            <div class="control">
+                                <input
+                                    class="input"
+                                    id="confirmPassword"
+                                    name="confirmPassword"
+                                    type="password"
+                                    [(ngModel)]="confirmPassword"
+                                    required
+                                    autocomplete="new-password"
+                                />
+                            </div>
+                            @if (confirmPassword && confirmPassword !== password) {
+                                <p class="help is-danger">Passwords do not match.</p>
+                            }
+                        </div>
 
-        <h2>Shipping addresses</h2>
-        @for (address of addresses; track address.id) {
-            <fieldset class="address-row">
-                <legend>Address {{ $index + 1 }}</legend>
-                <label [for]="'country-' + address.id">Country</label>
-                <input [id]="'country-' + address.id" [name]="'country-' + address.id" [(ngModel)]="address.country" required />
-                <label [for]="'state-' + address.id">State / Province</label>
-                <input [id]="'state-' + address.id" [name]="'state-' + address.id" [(ngModel)]="address.state" />
-                <label [for]="'city-' + address.id">City</label>
-                <input [id]="'city-' + address.id" [name]="'city-' + address.id" [(ngModel)]="address.city" required />
-                <label [for]="'street-' + address.id">Street</label>
-                <input [id]="'street-' + address.id" [name]="'street-' + address.id" [(ngModel)]="address.street" required />
-                <label [for]="'phone-' + address.id">Contact phone number</label>
-                <input [id]="'phone-' + address.id" [name]="'phone-' + address.id" [(ngModel)]="address.contactPhoneNumber" required />
-                <button type="button" class="remove-address" (click)="removeAddress(address.id)">Remove</button>
-            </fieldset>
-        }
-        <button type="button" class="add-address" (click)="addAddress()">+ Add address</button>
+                        <h2 class="title is-5">Shipping addresses</h2>
+                        @for (address of addresses; track address.id) {
+                            <fieldset class="box">
+                                <legend class="heading">Address {{ $index + 1 }}</legend>
+                                <div class="field">
+                                    <label class="label" [for]="'country-' + address.id">Country</label>
+                                    <div class="control">
+                                        <input
+                                            class="input"
+                                            [id]="'country-' + address.id"
+                                            [name]="'country-' + address.id"
+                                            [(ngModel)]="address.country"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label" [for]="'state-' + address.id">State / Province</label>
+                                    <div class="control">
+                                        <input class="input" [id]="'state-' + address.id" [name]="'state-' + address.id" [(ngModel)]="address.state" />
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label" [for]="'city-' + address.id">City</label>
+                                    <div class="control">
+                                        <input class="input" [id]="'city-' + address.id" [name]="'city-' + address.id" [(ngModel)]="address.city" required />
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label" [for]="'street-' + address.id">Street</label>
+                                    <div class="control">
+                                        <input
+                                            class="input"
+                                            [id]="'street-' + address.id"
+                                            [name]="'street-' + address.id"
+                                            [(ngModel)]="address.street"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label" [for]="'phone-' + address.id">Contact phone number</label>
+                                    <div class="control">
+                                        <input
+                                            class="input"
+                                            [id]="'phone-' + address.id"
+                                            [name]="'phone-' + address.id"
+                                            [(ngModel)]="address.contactPhoneNumber"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="control">
+                                        <button type="button" class="button is-danger is-light" (click)="removeAddress(address.id)">Remove</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        }
+                        <div class="field">
+                            <div class="control">
+                                <button type="button" class="button is-light is-fullwidth" (click)="addAddress()">+ Add address</button>
+                            </div>
+                        </div>
 
-        @if (error()) {
-            <p role="alert" class="error">{{ error() }}</p>
-        }
-        <button type="submit" [disabled]="form.invalid || busy() || password !== confirmPassword">{{ busy() ? 'Please wait...' : 'Create account' }}</button>
-    </form>
-    <p>
-        <a routerLink="/login" [queryParams]="{ returnUrl: returnUrl }"> Already have an account? Sign in </a>
-    </p>
-</main>
+                        @if (error()) {
+                            <p role="alert" class="help is-danger">{{ error() }}</p>
+                        }
+                        <div class="field">
+                            <div class="control">
+                                <button
+                                    type="submit"
+                                    class="button is-primary is-fullwidth"
+                                    [disabled]="form.invalid || busy() || password !== confirmPassword"
+                                >
+                                    {{ busy() ? 'Please wait...' : 'Create account' }}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <p>
+                        <a routerLink="/login" [queryParams]="{ returnUrl: returnUrl }"> Already have an account? Sign in </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

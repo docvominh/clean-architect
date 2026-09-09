@@ -1,18 +1,48 @@
-<main class="auth-card">
-    <p class="eyebrow">CLEAN ARCHITECT</p>
-    <h1>Welcome back</h1>
-    <p>Sign in to continue to your account.</p>
-    <form #form="ngForm" (ngSubmit)="submit()">
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" [(ngModel)]="email" required email autocomplete="email" />
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" [(ngModel)]="password" required autocomplete="current-password" />
-        @if (error()) {
-            <p role="alert" class="error">{{ error() }}</p>
-        }
-        <button type="submit" [disabled]="form.invalid || busy()">{{ busy() ? 'Please wait...' : 'Sign in' }}</button>
-    </form>
-    <p>
-        <a routerLink="/register" [queryParams]="{ returnUrl: returnUrl }"> New here? Create an account </a>
-    </p>
-</main>
+<section class="section">
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-half">
+                <div class="box">
+                    <p class="heading">Clean Architect</p>
+                    <h1 class="title">Welcome back</h1>
+                    <p class="subtitle">Sign in to continue to your account.</p>
+                    <form #form="ngForm" (ngSubmit)="submit()">
+                        <div class="field">
+                            <label class="label" for="email">Email</label>
+                            <div class="control">
+                                <input class="input" id="email" name="email" type="email" [(ngModel)]="email" required email autocomplete="email" />
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="password">Password</label>
+                            <div class="control">
+                                <input
+                                    class="input"
+                                    id="password"
+                                    name="password"
+                                    type="password"
+                                    [(ngModel)]="password"
+                                    required
+                                    autocomplete="current-password"
+                                />
+                            </div>
+                        </div>
+                        @if (error()) {
+                            <p role="alert" class="help is-danger">{{ error() }}</p>
+                        }
+                        <div class="field">
+                            <div class="control">
+                                <button type="submit" class="button is-primary is-fullwidth" [disabled]="form.invalid || busy()">
+                                    {{ busy() ? 'Please wait...' : 'Sign in' }}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <p>
+                        <a routerLink="/register" [queryParams]="{ returnUrl: returnUrl }"> New here? Create an account </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

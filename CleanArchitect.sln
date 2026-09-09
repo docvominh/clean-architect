@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitect.Application.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitect.Infrastructure.IntegrationTests", "CleanArchitect.Infrastructure.IntegrationTests\CleanArchitect.Infrastructure.IntegrationTests.csproj", "{36806644-0839-4CB9-8C44-F97AD6BF33AE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C8489BC8-599B-4505-85F0-7BAFEF5C9532}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,5 +113,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{62817898-064F-4A51-9E7A-A97476B708E7} = {C8489BC8-599B-4505-85F0-7BAFEF5C9532}
+		{36806644-0839-4CB9-8C44-F97AD6BF33AE} = {C8489BC8-599B-4505-85F0-7BAFEF5C9532}
 	EndGlobalSection
 EndGlobal

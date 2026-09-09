@@ -1,0 +1,32 @@
+import { Component, inject, signal } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../user/auth.service';
+
+@Component({
+    selector: 'app-navbar',
+    standalone: true,
+    imports: [RouterLink],
+    templateUrl: './navbar.component.html',
+})
+export class NavbarComponent {
+    readonly auth = inject(AuthService);
+    private readonly router = inject(Router);
+    readonly menuOpen = signal(false);
+    readonly busy = signal(false);
+
+    toggleMenu(): void {
+        this.menuOpen.update(open => !open);
+    }
+
+    async logout(): Promise<void> {
+        if (this.busy()) return;
+        this.busy.set(true);
+        try {
+            await this.auth.logout();
+        } finally {
+            this.busy.set(false);
+            this.menuOpen.set(false);
+            await this.router.navigateByUrl('/login');
+        }
+    }
+}
