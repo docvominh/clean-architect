@@ -17,6 +17,19 @@ public class OrderTests
     }
 
     [Fact]
+    public void UpdateStatus_ShouldChangeStatus()
+    {
+        // Arrange
+        var order = new Order(Guid.NewGuid(), Guid.NewGuid(), "Australia", "Melbourne", "1 Main St", "0400000000");
+
+        // Act
+        order.UpdateStatus(OrderStatus.Shipped);
+
+        // Assert
+        order.Status.ShouldBe(OrderStatus.Shipped);
+    }
+
+    [Fact]
     public void AddProduct_ShouldAppendLineAndAccumulateTotal()
     {
         // Arrange

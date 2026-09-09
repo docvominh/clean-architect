@@ -1,0 +1,54 @@
+<section class="section">
+    <div class="container">
+        <h1 class="title">Orders</h1>
+
+        @if (error()) {
+            <div class="notification is-danger" role="alert">{{ error() }}</div>
+        }
+
+        @if (loading()) {
+            <p>Loading...</p>
+        } @else if (orders().length === 0) {
+            <p>No orders yet.</p>
+        } @else {
+            <div class="table-container">
+                <table class="table is-fullwidth is-striped is-narrow">
+                    <thead>
+                        <tr>
+                            <th>Order #</th>
+                            <th>Date</th>
+                            <th>Shipping address</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (order of orders(); track order.id) {
+                            <tr>
+                                <td [title]="order.id">{{ order.id | slice: 0 : 8 }}</td>
+                                <td>{{ order.createdAt | date: 'short' }}</td>
+                                <td>{{ order.street }}, {{ order.city }}{{ order.state ? ', ' + order.state : '' }}, {{ order.country }}</td>
+                                <td>
+                                    @for (line of order.products; track line.productId) {
+                                        <div>{{ line.productName }} × {{ line.quantity }}</div>
+                                    }
+                                </td>
+                                <td>{{ order.totalAmount | number: '1.2-2' }}</td>
+                                <td>
+                                    <div class="select is-small">
+                                        <select (change)="changeStatus(order, $any($event.target).value)">
+                                            @for (status of statuses; track status) {
+                                                <option [value]="status" [selected]="status === order.status">{{ status }}</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</section>

@@ -17,4 +17,12 @@ export class OrderService {
             this.http.get<OrdersResponse>(apiUrl('/api/orders/mine')).pipe(map(response => response.orders)),
         );
     }
+
+    getAll(): Promise<OrderResponse[]> {
+        return firstValueFrom(this.http.get<OrdersResponse>(apiUrl('/api/orders')).pipe(map(response => response.orders)));
+    }
+
+    updateStatus(orderId: string, status: string): Promise<OrderResponse> {
+        return firstValueFrom(this.http.put<OrderResponse>(apiUrl(`/api/orders/${orderId}/status`), { status }));
+    }
 }

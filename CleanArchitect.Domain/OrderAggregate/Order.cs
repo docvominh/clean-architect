@@ -32,11 +32,16 @@ public class Order : BaseEntity
 
     public string ContactPhoneNumber { get; init; }
 
-    public OrderStatus Status { get; init; }
+    public OrderStatus Status { get; private set; }
 
     public decimal TotalAmount { get; private set; }
 
     public List<OrderProduct> OrderProducts { get; } = [];
+
+    public void UpdateStatus(OrderStatus status)
+    {
+        Status = status;
+    }
 
     public void AddProduct(Guid productId, int quantity, decimal unitPrice)
     {

@@ -4,8 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CartService } from './cart.service';
-import { OrderService } from './order.service';
-import { OrderResponse } from './order.models';
+import { OrderService } from '../order/order.service';
+import { OrderResponse } from '../order/order.models';
 
 @Component({
     selector: 'app-checkout',

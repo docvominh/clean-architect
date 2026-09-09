@@ -18,7 +18,7 @@ public sealed class CreateOrderCommandHandler(IOrderRepository orders, IProductR
             request.Request.Street,
             request.Request.ContactPhoneNumber,
             request.Request.State);
-        var lines = new List<OrderProductDto>();
+        var productNames = new Dictionary<Guid, string>();
 
         foreach (var item in request.Request.Items)
         {
@@ -27,12 +27,12 @@ public sealed class CreateOrderCommandHandler(IOrderRepository orders, IProductR
 
             var unitPrice = product.PriceDiscount ?? product.Price;
             order.AddProduct(product.Id, item.Quantity, unitPrice);
-            lines.Add(new OrderProductDto(product.Id, product.Name, item.Quantity, unitPrice));
+            productNames[product.Id] = product.Name;
         }
 
         orders.Add(order);
         await orders.SaveChangesAsync(cancellationToken);
 
-        return new OrderDto(order.Id, order.Status, order.TotalAmount, order.CreatedAt, lines);
+        return OrderDto.From(order, productNames);
     }
 }

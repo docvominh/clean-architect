@@ -7,6 +7,22 @@ namespace CleanArchitect.Infrastructure.OrderAggregate;
 
 public sealed class OrderRepository(AppDbContext dbContext) : IOrderRepository
 {
+    public Task<Order?> FindAsync(Guid id, CancellationToken cancellationToken)
+    {
+        return dbContext.Orders
+            .Include(o => o.OrderProducts)
+            .FirstOrDefaultAsync(o => o.Id == id, cancellationToken);
+    }
+
+    public Task<List<Order>> GetAllAsync(CancellationToken cancellationToken)
+    {
+        return dbContext.Orders
+            .Include(o => o.OrderProducts)
+            .OrderByDescending(o => o.CreatedAt)
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+    }
+
     public Task<List<Order>> GetByUserAsync(Guid userId, CancellationToken cancellationToken)
     {
         return dbContext.Orders

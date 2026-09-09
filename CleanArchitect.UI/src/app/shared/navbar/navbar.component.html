@@ -12,14 +12,11 @@
 
     <div class="navbar-menu" [class.is-active]="menuOpen()">
         <div class="navbar-start">
-            <a class="navbar-item" routerLink="/" (click)="menuOpen.set(false)">Home</a>
-            @if (auth.user()?.roles?.includes('Admin')) {
-                <a class="navbar-item" routerLink="/admin/product" (click)="menuOpen.set(false)">Products</a>
-            }
+            <a class="navbar-item" routerLink="/" (click)="closeMenus()">Home</a>
         </div>
 
         <div class="navbar-end">
-            <a class="navbar-item" routerLink="/cart" (click)="menuOpen.set(false)" style="position: relative" aria-label="Cart">
+            <a class="navbar-item" routerLink="/cart" (click)="closeMenus()" style="position: relative" aria-label="Cart">
                 <span class="icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="9" cy="21" r="1"></circle>
@@ -37,15 +34,21 @@
                 <div class="navbar-item has-dropdown" [class.is-active]="userMenuOpen()">
                     <a class="navbar-link" (click)="toggleUserMenu()">{{ auth.user()?.name || auth.user()?.email }}</a>
                     <div class="navbar-dropdown is-right">
-                        <a class="navbar-item" routerLink="/orders" (click)="userMenuOpen.set(false)">My order</a>
+                        @if (!auth.user()?.roles?.includes('Admin')) {
+                            <a class="navbar-item" routerLink="/orders" (click)="closeMenus()">My order</a>
+                        }
+                        @if (auth.user()?.roles?.includes('Admin')) {
+                            <a class="navbar-item" routerLink="/admin/product" (click)="closeMenus()">Products</a>
+                            <a class="navbar-item" routerLink="/admin/order" (click)="closeMenus()">Orders</a>
+                        }
                         <a class="navbar-item" (click)="logout()">Logout</a>
                     </div>
                 </div>
             } @else {
                 <div class="navbar-item">
                     <div class="buttons">
-                        <a class="button is-light" routerLink="/login" (click)="menuOpen.set(false)">Log in</a>
-                        <a class="button is-primary is-inverted" routerLink="/register" (click)="menuOpen.set(false)">Register</a>
+                        <a class="button is-light" routerLink="/login" (click)="closeMenus()">Log in</a>
+                        <a class="button is-primary is-inverted" routerLink="/register" (click)="closeMenus()">Register</a>
                     </div>
                 </div>
             }

@@ -32,4 +32,18 @@ public class OrderController(ISender sender) : ControllerBase
 
         return sender.Send(new GetOrdersByUserQuery(userId), cancellationToken);
     }
+
+    [HttpGet]
+    [Authorize(Roles = "Admin")]
+    public Task<OrdersDto> GetAll(CancellationToken cancellationToken)
+    {
+        return sender.Send(new GetAllOrdersQuery(), cancellationToken);
+    }
+
+    [HttpPut("{id:guid}/status")]
+    [Authorize(Roles = "Admin")]
+    public Task<OrderDto> UpdateStatus(Guid id, UpdateOrderStatusRequest request, CancellationToken cancellationToken)
+    {
+        return sender.Send(new UpdateOrderStatusCommand(id, request.Status), cancellationToken);
+    }
 }

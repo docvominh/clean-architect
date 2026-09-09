@@ -11,22 +11,6 @@ public sealed class GetOrdersByUserQueryHandler(IOrderRepository orders, IProduc
         var userOrders = await orders.GetByUserAsync(request.UserId, cancellationToken);
         var productNames = (await products.GetAllAsync(cancellationToken)).ToDictionary(p => p.Id, p => p.Name);
 
-        var result = userOrders
-            .Select(order => new OrderDto(
-                order.Id,
-                order.Status,
-                order.TotalAmount,
-                order.CreatedAt,
-                order.OrderProducts
-                    .Select(orderProduct =>
-                        new OrderProductDto(
-                            orderProduct.ProductId,
-                            productNames.GetValueOrDefault(orderProduct.ProductId, "Unknown product"),
-                            orderProduct.Quantity,
-                            orderProduct.UnitPrice))
-                    .ToList()))
-            .ToList();
-
-        return new OrdersDto(result);
+        return new OrdersDto(userOrders.Select(o => OrderDto.From(o, productNames)).ToList());
     }
 }

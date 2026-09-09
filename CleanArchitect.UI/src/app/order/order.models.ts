@@ -24,6 +24,11 @@ export interface OrderResponse {
     status: string;
     totalAmount: number;
     createdAt: string;
+    country: string;
+    state?: string;
+    city: string;
+    street: string;
+    contactPhoneNumber: string;
     products: OrderProductResponse[];
 }
 
