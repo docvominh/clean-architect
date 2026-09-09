@@ -21,7 +21,11 @@ public sealed class MsSqlContainerFixture : IAsyncLifetime
     {
         await _container.StartAsync();
         var result = DatabaseMigrator.Migrate(ConnectionString);
-        if (!result.Successful) throw new InvalidOperationException("Failed to migrate the SQL Server test database.", result.Error);
+
+        if (!result.Successful)
+        {
+            throw new InvalidOperationException("Failed to migrate the SQL Server test database.", result.Error);
+        }
     }
 
     public async Task DisposeAsync()

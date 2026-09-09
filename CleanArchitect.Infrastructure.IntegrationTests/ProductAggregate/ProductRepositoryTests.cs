@@ -29,6 +29,7 @@ public sealed class ProductRepositoryTests(MsSqlContainerFixture fixture) : Repo
         // Act
         Repository.Add(product);
         bool wasMissingBeforeSave;
+
         await using (var beforeSave = CreateDbContext())
         {
             wasMissingBeforeSave = await new ProductRepository(beforeSave).FindAsync(product.Id, CancellationToken.None) is null;

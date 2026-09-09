@@ -1,4 +1,3 @@
-using CleanArchitect.Application.UserAggregate;
 using CleanArchitect.Application.UserAggregate.AspnetIdentity;
 using CleanArchitect.Domain.UserAggregate;
 

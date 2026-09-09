@@ -12,6 +12,7 @@ public sealed class UserIdentityService(UserManager<AppUser> users, SignInManage
         cancellationToken.ThrowIfCancellationRequested();
         var user = new AppUser { UserName = request.Email, Email = request.Email };
         EnsureSuccess(await users.CreateAsync(user, request.Password));
+
         return new TokenSubject(user.Id, user.Email, user.UserName, null);
     }
 
@@ -25,6 +26,7 @@ public sealed class UserIdentityService(UserManager<AppUser> users, SignInManage
     {
         cancellationToken.ThrowIfCancellationRequested();
         var user = await users.FindByEmailAsync(email);
+
         return user is null ? null : await SubjectAsync(user, cancellationToken);
     }
 
@@ -32,12 +34,14 @@ public sealed class UserIdentityService(UserManager<AppUser> users, SignInManage
     {
         cancellationToken.ThrowIfCancellationRequested();
         var user = await users.FindByIdAsync(userId.ToString());
+
         return user is null ? null : await SubjectAsync(user, cancellationToken);
     }
 
     public async Task<bool> CheckPasswordAsync(Guid userId, string password, CancellationToken cancellationToken)
     {
         var user = await GetUserAsync(userId, cancellationToken);
+
         return (await signIn.CheckPasswordSignInAsync(user, password, true)).Succeeded;
     }
 
@@ -49,20 +53,24 @@ public sealed class UserIdentityService(UserManager<AppUser> users, SignInManage
     private async Task<AppUser> GetUserAsync(Guid userId, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
+
         return await users.FindByIdAsync(userId.ToString()) ?? throw new UserAuthenticationException();
     }
 
     private async Task<TokenSubject> SubjectAsync(AppUser user, CancellationToken cancellationToken)
     {
         var profile = await userRepository.FindAsync(user.Id, cancellationToken);
+
         return new TokenSubject(user.Id, user.Email, user.UserName, profile?.DisplayName);
     }
 
     private static void EnsureSuccess(IdentityResult result)
     {
         if (!result.Succeeded)
+        {
             throw new UserValidationException(
                 result.Errors.GroupBy(e => e.Code)
                     .ToDictionary(group => group.Key, group => group.Select(e => e.Description).ToArray()));
+        }
     }
 }

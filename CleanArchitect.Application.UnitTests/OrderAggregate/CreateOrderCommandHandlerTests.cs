@@ -17,26 +17,29 @@ public class CreateOrderCommandHandlerTests
     private readonly Mock<IOrderRepository> orders = new();
     private readonly Mock<IProductRepository> products = new();
 
-    private static OrderRequest Request(Guid productId, int quantity = 2) => new()
+    private static OrderRequest Request(Guid productId, int quantity = 2)
     {
-        Country = "Australia",
-        City = "Melbourne",
-        Street = "1 Main St",
-        ContactPhoneNumber = "0400000000",
-        Items = [new OrderItemRequest { ProductId = productId, Quantity = quantity }],
-    };
+        return new OrderRequest
+        {
+            Country = "Australia",
+            City = "Melbourne",
+            Street = "1 Main St",
+            ContactPhoneNumber = "0400000000",
+            Items = [new OrderItemRequest { ProductId = productId, Quantity = quantity }]
+        };
+    }
 
     [Fact]
     public async Task Handler_CreateOrder_ShouldAddOrderWithServerComputedPrice()
     {
         // Arrange
         var createdBy = Guid.NewGuid();
-        var product = new Product(Guid.NewGuid(), createdBy, "Widget", "Acme", price: 100m, priceDiscount: 80m);
+        var product = new Product(Guid.NewGuid(), createdBy, "Widget", "Acme", 100m, priceDiscount: 80m);
         products.Setup(p => p.FindAsync(product.Id, It.IsAny<CancellationToken>())).ReturnsAsync(product);
         var handler = new CreateOrderCommandHandler(orders.Object, products.Object);
 
         // Act
-        var result = await handler.Handle(new CreateOrderCommand(Request(product.Id, quantity: 3), createdBy), default);
+        var result = await handler.Handle(new CreateOrderCommand(Request(product.Id, 3), createdBy), default);
 
         // Assert
         orders.Verify(

@@ -77,6 +77,9 @@ csharp_blank_lines_after_block_statements = 1
 
 csharp_blank_lines_around_invocable = 1
 csharp_blank_lines_around_single_line_invocable = 1
+csharp_align_multiline_binary_expressions_chain = false
+csharp_continuous_indent_multiplier = 1
+
 # CodingConventions.md: var only when the type is apparent from the right-hand side.
 # csharp_style_var_for_built_in_types = false:warning
 # csharp_style_var_when_type_is_apparent = true:warning

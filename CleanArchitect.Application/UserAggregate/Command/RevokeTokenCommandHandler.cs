@@ -11,9 +11,11 @@ public class RevokeTokenCommandHandler(
     public async Task Handle(RevokeTokenCommand request, CancellationToken cancellationToken)
     {
         var refreshTokenValue = refreshTokenCookie.Read();
+
         if (!string.IsNullOrEmpty(refreshTokenValue))
         {
             var token = await refreshTokens.FindAsync(refreshTokenValue, cancellationToken);
+
             if (token is not null && token.UserId == request.UserId && token.IsActive)
             {
                 token.RevokedAt = DateTimeOffset.UtcNow;

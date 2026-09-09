@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 using Azure.Storage.Blobs;
 
 using CleanArchitect.Api;
@@ -19,8 +21,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 
-using System.Text.Json.Serialization;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -33,7 +33,10 @@ builder.Services.AddOptions<JwtOptions>()
     .Validate(
         options =>
         {
-            if (string.IsNullOrWhiteSpace(options.Key)) return false;
+            if (string.IsNullOrWhiteSpace(options.Key))
+            {
+                return false;
+            }
 
             try
             {

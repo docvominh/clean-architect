@@ -1,4 +1,3 @@
-using CleanArchitect.Application;
 using CleanArchitect.Application.ProductAggregate;
 using CleanArchitect.Application.ProductAggregate.Command;
 using CleanArchitect.Domain.ProductAggregate;
@@ -15,12 +14,15 @@ public class UpdateProductCommandHandlerTests
 {
     private readonly Mock<IProductRepository> products = new();
 
-    private static ProductRequest Request(string name = "Widget", decimal price = 9.99m) => new()
+    private static ProductRequest Request(string name = "Widget", decimal price = 9.99m)
     {
-        Name = name,
-        Manufacturer = "Acme",
-        Price = price,
-    };
+        return new ProductRequest
+        {
+            Name = name,
+            Manufacturer = "Acme",
+            Price = price
+        };
+    }
 
     [Fact]
     public async Task Handler_UpdateProduct_ShouldApplyChangesAndRecordUpdater()

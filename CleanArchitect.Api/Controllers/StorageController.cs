@@ -12,7 +12,7 @@ public class StorageController(IStorageService storage) : ControllerBase
 {
     private static readonly HashSet<string> AllowedImageContentTypes = new(StringComparer.OrdinalIgnoreCase)
     {
-        "image/png", "image/jpeg", "image/webp", "image/gif",
+        "image/png", "image/jpeg", "image/webp", "image/gif"
     };
 
     [HttpPost("upload")]

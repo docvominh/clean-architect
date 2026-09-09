@@ -12,6 +12,7 @@ public class OrderTests
     {
         var order = new Order(Guid.NewGuid(), createBy, "Australia", "Melbourne", "1 Main St", "0400000000");
         order.AddProduct(productId, quantity, unitPrice);
+
         return order;
     }
 
@@ -22,8 +23,8 @@ public class OrderTests
         var order = new Order(Guid.NewGuid(), Guid.NewGuid(), "Australia", "Melbourne", "1 Main St", "0400000000");
 
         // Act
-        order.AddProduct(Guid.NewGuid(), quantity: 2, unitPrice: 15m);
-        order.AddProduct(Guid.NewGuid(), quantity: 1, unitPrice: 5m);
+        order.AddProduct(Guid.NewGuid(), 2, 15m);
+        order.AddProduct(Guid.NewGuid(), 1, 5m);
 
         // Assert
         order.OrderProducts.Count.ShouldBe(2);
@@ -36,10 +37,10 @@ public class OrderTests
         // Arrange
         var createBy = Guid.NewGuid();
         var productId = Guid.NewGuid();
-        var order = CreateOrder(createBy, productId, quantity: 1, unitPrice: 10m);
+        var order = CreateOrder(createBy, productId);
 
         // Act
-        order.UpdateProduct(productId, quantity: 3, unitPrice: 12m);
+        order.UpdateProduct(productId, 3, 12m);
 
         // Assert
         order.OrderProducts.ShouldHaveSingleItem();
@@ -56,7 +57,7 @@ public class OrderTests
         var order = CreateOrder(createBy, Guid.NewGuid());
 
         // Act
-        var act = () => order.UpdateProduct(Guid.NewGuid(), quantity: 1, unitPrice: 5m);
+        var act = () => order.UpdateProduct(Guid.NewGuid(), 1, 5m);
 
         // Assert
         Should.Throw<InvalidOperationException>(act);

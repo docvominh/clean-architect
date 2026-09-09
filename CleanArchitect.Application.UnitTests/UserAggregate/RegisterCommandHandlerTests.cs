@@ -48,9 +48,14 @@ public class RegisterCommandHandlerTests
 
         // Assert
         users.Verify(u => u.AddToRoleAsync(User.Id, "User", It.IsAny<CancellationToken>()), Times.Once);
-        userRepository.Verify(r => r.Add(It.Is<Domain.UserAggregate.User>(u =>
-            u.Id == User.Id && u.DisplayName == "Test User" && u.Addresses.Count == 0
-            && u.CreateBy == User.Id && u.UpdateBy == User.Id)), Times.Once);
+        userRepository.Verify(
+            r => r.Add(
+                It.Is<User>(u =>
+                    u.Id == User.Id
+                    && u.DisplayName == "Test User"
+                    && u.Addresses.Count == 0
+                    && u.CreateBy == User.Id
+                    && u.UpdateBy == User.Id)), Times.Once);
         tokens.Verify(t => t.GenerateAccessToken(It.Is<TokenSubject>(s => s.DisplayName == "Test User"), It.IsAny<IList<string>>()), Times.Once);
         refreshTokens.Verify(r => r.Add(It.Is<RefreshToken>(t => t.Token == "new-token")), Times.Once);
         cookie.Verify(c => c.Write("new-token", It.IsAny<DateTimeOffset>()), Times.Once);
@@ -76,17 +81,25 @@ public class RegisterCommandHandlerTests
                     Addresses =
                     [
                         new ShippingAddressRequest { Country = "US", City = "Springfield", Street = "1 Main St", ContactPhoneNumber = "555-0100" },
-                        new ShippingAddressRequest { Country = "US", City = "Shelbyville", Street = "2 Elm St", ContactPhoneNumber = "555-0200" },
-                    ],
+                        new ShippingAddressRequest { Country = "US", City = "Shelbyville", Street = "2 Elm St", ContactPhoneNumber = "555-0200" }
+                    ]
                 }), default);
 
         // Assert
-        userRepository.Verify(r => r.Add(It.Is<Domain.UserAggregate.User>(u =>
-            u.Addresses.Count == 2
-            && u.Addresses[0].UserId == User.Id && u.Addresses[0].City == "Springfield" && u.Addresses[0].IsDefault
-            && u.Addresses[0].CreateBy == User.Id && u.Addresses[0].UpdateBy == User.Id
-            && u.Addresses[1].UserId == User.Id && u.Addresses[1].City == "Shelbyville" && !u.Addresses[1].IsDefault
-            && u.Addresses[1].CreateBy == User.Id && u.Addresses[1].UpdateBy == User.Id)), Times.Once);
+        userRepository.Verify(
+            r => r.Add(
+                It.Is<User>(u =>
+                    u.Addresses.Count == 2
+                    && u.Addresses[0].UserId == User.Id
+                    && u.Addresses[0].City == "Springfield"
+                    && u.Addresses[0].IsDefault
+                    && u.Addresses[0].CreateBy == User.Id
+                    && u.Addresses[0].UpdateBy == User.Id
+                    && u.Addresses[1].UserId == User.Id
+                    && u.Addresses[1].City == "Shelbyville"
+                    && !u.Addresses[1].IsDefault
+                    && u.Addresses[1].CreateBy == User.Id
+                    && u.Addresses[1].UpdateBy == User.Id)), Times.Once);
     }
 
     [Fact]
@@ -106,7 +119,7 @@ public class RegisterCommandHandlerTests
         // Assert
         await Should.ThrowAsync<UserValidationException>(act);
 
-        userRepository.Verify(r => r.Add(It.IsAny<Domain.UserAggregate.User>()), Times.Never);
+        userRepository.Verify(r => r.Add(It.IsAny<User>()), Times.Never);
         refreshTokens.Verify(r => r.Add(It.IsAny<RefreshToken>()), Times.Never);
     }
 }

@@ -33,6 +33,7 @@ public class ProductController(ISender sender) : ControllerBase
     public Task<ProductResponse> Create(ProductRequest request, CancellationToken cancellationToken)
     {
         var createdBy = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
         return sender.Send(new CreateProductCommand(request, createdBy), cancellationToken);
     }
 
@@ -41,6 +42,7 @@ public class ProductController(ISender sender) : ControllerBase
     public Task<ProductResponse> Update(Guid id, ProductRequest request, CancellationToken cancellationToken)
     {
         var updatedBy = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
         return sender.Send(new UpdateProductCommand(id, request, updatedBy), cancellationToken);
     }
 
@@ -49,6 +51,7 @@ public class ProductController(ISender sender) : ControllerBase
     public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
     {
         await sender.Send(new DeleteProductCommand(id), cancellationToken);
+
         return NoContent();
     }
 }

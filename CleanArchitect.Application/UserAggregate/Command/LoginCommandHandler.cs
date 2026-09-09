@@ -12,10 +12,15 @@ public class LoginCommandHandler(
     public async Task<AuthResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
         var user = await users.FindByEmailAsync(request.LoginRequest.Email, cancellationToken);
-        if (user is null || !await users.CheckPasswordAsync(user.Id, request.LoginRequest.Password, cancellationToken)) throw new UserAuthenticationException();
+
+        if (user is null || !await users.CheckPasswordAsync(user.Id, request.LoginRequest.Password, cancellationToken))
+        {
+            throw new UserAuthenticationException();
+        }
 
         var (response, _) = await sessions.CreateAsync(user, cancellationToken);
         await refreshTokens.SaveChangesAsync(cancellationToken);
+
         return response;
     }
 }

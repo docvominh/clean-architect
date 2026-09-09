@@ -23,6 +23,7 @@ if (string.IsNullOrWhiteSpace(connectionString))
     Console.WriteLine(
         "Missing ConnectionStrings:AzureSql. Set it in appsettings.json/appsettings.{Environment}.json or the ConnectionStrings__AzureSql environment variable.");
     Console.ResetColor();
+
     return -1;
 }
 

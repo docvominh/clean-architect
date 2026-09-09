@@ -30,6 +30,7 @@ public sealed class RefreshTokenRepositoryTests(MsSqlContainerFixture fixture) :
         Repository.Add(token);
         Repository.Add(CreateToken(id, "other-token"));
         bool wasMissingBeforeSave;
+
         await using (var beforeSave = CreateDbContext())
         {
             wasMissingBeforeSave = await new RefreshTokenRepository(beforeSave).FindAsync(token.Token, CancellationToken.None) is null;
@@ -124,7 +125,7 @@ public sealed class RefreshTokenRepositoryTests(MsSqlContainerFixture fixture) :
         Repository.Add(CreateToken(second));
 
         // Act
-        Func<Task> act = () => Repository.SaveChangesAsync(CancellationToken.None);
+        var act = () => Repository.SaveChangesAsync(CancellationToken.None);
 
         // Assert
         var error = await Should.ThrowAsync<DbUpdateException>(act);
@@ -138,7 +139,7 @@ public sealed class RefreshTokenRepositoryTests(MsSqlContainerFixture fixture) :
         Repository.Add(CreateToken(Guid.NewGuid()));
 
         // Act
-        Func<Task> act = () => Repository.SaveChangesAsync(CancellationToken.None);
+        var act = () => Repository.SaveChangesAsync(CancellationToken.None);
 
         // Assert
         var error = await Should.ThrowAsync<DbUpdateException>(act);

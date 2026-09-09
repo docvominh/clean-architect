@@ -38,7 +38,10 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        if (!optionsBuilder.IsConfigured) optionsBuilder.UseSqlServer();
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseSqlServer();
+        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -80,7 +83,10 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
                 ((BaseEntity)entityEntry.Entity).ModifiedAt = DateTimeOffset.UtcNow;
             }
 
-            if (entityEntry.State == EntityState.Modified) ((BaseEntity)entityEntry.Entity).ModifiedAt = DateTimeOffset.UtcNow;
+            if (entityEntry.State == EntityState.Modified)
+            {
+                ((BaseEntity)entityEntry.Entity).ModifiedAt = DateTimeOffset.UtcNow;
+            }
         }
 
         return await base.SaveChangesAsync(cancellationToken);

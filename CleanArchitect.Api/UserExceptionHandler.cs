@@ -20,14 +20,17 @@ public sealed class UserExceptionHandler : IExceptionHandler
                 };
                 httpContext.Response.StatusCode = problem.Status.Value;
                 await httpContext.Response.WriteAsJsonAsync(problem, cancellationToken);
+
                 return true;
 
             case UserAuthenticationException:
                 httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+
                 return true;
 
             case NotFoundException:
                 httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+
                 return true;
 
             default:

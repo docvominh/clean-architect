@@ -1,6 +1,5 @@
 using System.Security.Claims;
 
-using CleanArchitect.Application.UserAggregate;
 using CleanArchitect.Application.UserAggregate.AspnetIdentity;
 using CleanArchitect.Application.UserAggregate.Command;
 
@@ -40,6 +39,7 @@ public class UserController(ISender sender) : ControllerBase
     {
         var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
         await sender.Send(new RevokeTokenCommand(userId), cancellationToken);
+
         return NoContent();
     }
 }

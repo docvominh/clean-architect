@@ -1,4 +1,3 @@
-using CleanArchitect.Application;
 using CleanArchitect.Application.ProductAggregate;
 using CleanArchitect.Application.ProductAggregate.Query;
 using CleanArchitect.Domain.ProductAggregate;

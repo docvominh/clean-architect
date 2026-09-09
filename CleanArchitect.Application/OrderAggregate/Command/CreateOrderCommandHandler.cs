@@ -22,7 +22,7 @@ public sealed class CreateOrderCommandHandler(IOrderRepository orders, IProductR
         foreach (var item in request.Request.Items)
         {
             var product = await products.FindAsync(item.ProductId, cancellationToken)
-                          ?? throw new NotFoundException($"Product '{item.ProductId}' was not found.");
+                ?? throw new NotFoundException($"Product '{item.ProductId}' was not found.");
 
             var unitPrice = product.PriceDiscount ?? product.Price;
             order.AddProduct(product.Id, item.Quantity, unitPrice);

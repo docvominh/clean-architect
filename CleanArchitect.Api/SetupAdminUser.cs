@@ -44,6 +44,7 @@ public static class SetupAdminUser
         }
 
         var userRepository = scope.ServiceProvider.GetRequiredService<IUserRepository>();
+
         if (await userRepository.FindAsync(admin.Id, cancellationToken) is null)
         {
             await userRepository.Add(new User(admin.Id, admin.Id, "Admin"));
@@ -55,7 +56,9 @@ public static class SetupAdminUser
     private static void EnsureIdentitySuccess(IdentityResult result)
     {
         if (!result.Succeeded)
+        {
             throw new InvalidOperationException(
                 $"Identity startup seeding failed: {string.Join("; ", result.Errors.Select(error => $"{error.Code}: {error.Description}"))}");
+        }
     }
 }

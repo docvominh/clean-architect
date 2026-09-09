@@ -11,12 +11,15 @@ public sealed record ProductResponse(
     decimal Price,
     decimal? PriceDiscount)
 {
-    public static ProductResponse From(Product product) => new(
-        product.Id,
-        product.Name,
-        product.Manufacturer,
-        product.ImageUrl,
-        product.Description,
-        product.Price,
-        product.PriceDiscount);
+    public static ProductResponse From(Product product)
+    {
+        return new ProductResponse(
+            product.Id,
+            product.Name,
+            product.Manufacturer,
+            product.ImageUrl,
+            product.Description,
+            product.Price,
+            product.PriceDiscount);
+    }
 }

@@ -27,6 +27,7 @@ public sealed class UserRepositoryTests(MsSqlContainerFixture fixture) : Reposit
         // Act
         await new UserRepository(Context).Add(user);
         bool wasMissingBeforeSave;
+
         await using (var beforeSave = CreateDbContext())
         {
             wasMissingBeforeSave = await new UserRepository(beforeSave).FindAsync(id, CancellationToken.None) is null;

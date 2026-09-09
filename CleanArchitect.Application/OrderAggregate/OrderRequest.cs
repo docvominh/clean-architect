@@ -14,7 +14,7 @@ public sealed record OrderRequest
 
     [Required] public required string ContactPhoneNumber { get; init; }
 
-    [Required, MinLength(1)] public required List<OrderItemRequest> Items { get; init; }
+    [Required] [MinLength(1)] public required List<OrderItemRequest> Items { get; init; }
 }
 
 public sealed record OrderItemRequest

@@ -36,7 +36,7 @@ public class Order : BaseEntity
 
     public decimal TotalAmount { get; private set; }
 
-    public List<OrderProduct> OrderProducts { get; private set; } = [];
+    public List<OrderProduct> OrderProducts { get; } = [];
 
     public void AddProduct(Guid productId, int quantity, decimal unitPrice)
     {

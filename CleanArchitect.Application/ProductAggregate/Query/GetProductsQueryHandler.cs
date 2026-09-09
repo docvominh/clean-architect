@@ -7,6 +7,7 @@ public sealed class GetProductsQueryHandler(IProductRepository products) : IRequ
     public async Task<List<ProductResponse>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
     {
         var all = await products.GetAllAsync(cancellationToken);
+
         return all.Select(ProductResponse.From).ToList();
     }
 }

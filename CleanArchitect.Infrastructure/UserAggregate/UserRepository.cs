@@ -12,6 +12,6 @@ public sealed class UserRepository(AppDbContext dbContext) : IUserRepository
 
     public async Task Add(User user)
     {
-       await dbContext.UserProfiles.AddAsync(user);
+        await dbContext.UserProfiles.AddAsync(user);
     }
 }

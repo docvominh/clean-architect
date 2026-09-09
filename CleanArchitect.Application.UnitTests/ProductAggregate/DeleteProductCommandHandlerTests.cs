@@ -1,4 +1,3 @@
-using CleanArchitect.Application;
 using CleanArchitect.Application.ProductAggregate;
 using CleanArchitect.Application.ProductAggregate.Command;
 using CleanArchitect.Domain.ProductAggregate;
@@ -39,7 +38,7 @@ public class DeleteProductCommandHandlerTests
         var handler = new DeleteProductCommandHandler(products.Object);
 
         // Act
-        Func<Task> act = () => handler.Handle(new DeleteProductCommand(Guid.NewGuid()), default);
+        var act = () => handler.Handle(new DeleteProductCommand(Guid.NewGuid()), default);
 
         // Assert
         await Should.ThrowAsync<NotFoundException>(act);
