@@ -1,5 +1,16 @@
 # Repository integration tests
 
+Storage tests use a separate disposable Azurite Testcontainer with dynamically assigned ports. The fixture creates the
+`product` blob container, and tests call `AzureBlobService` through `IStorageService`. They verify uploaded bytes,
+content types, filename extensions, distinct blobs for repeated filenames, and cancellation without a new blob. The
+container is disposed after the test class; no development storage connection or volume is used.
+
+Run only storage tests:
+
+```powershell
+dotnet test CleanArchitect.Infrastructure.IntegrationTests/CleanArchitect.Infrastructure.IntegrationTests.csproj --filter FullyQualifiedName~AzureBlobServiceTests
+```
+
 Requires Docker with Linux containers. Run from the solution directory:
 
 ```powershell
