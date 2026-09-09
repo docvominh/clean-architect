@@ -1,0 +1,46 @@
+<section class="section">
+    <div class="container">
+        <h1 class="title">Shop</h1>
+
+        @if (error()) {
+            <div class="notification is-danger" role="alert">{{ error() }}</div>
+        }
+
+        @if (loading()) {
+            <p>Loading...</p>
+        } @else if (products().length === 0) {
+            <p>No products available.</p>
+        } @else {
+            <div class="columns is-multiline">
+                @for (product of products(); track product.id) {
+                    <div class="column is-one-quarter">
+                        <div class="card">
+                            @if (product.imageUrl) {
+                                <div class="card-image">
+                                    <figure class="image is-4by3">
+                                        <img [src]="product.imageUrl" [alt]="product.name" />
+                                    </figure>
+                                </div>
+                            }
+                            <div class="card-content">
+                                <p class="title is-5">{{ product.name }}</p>
+                                <p class="subtitle is-6">{{ product.manufacturer }}</p>
+                                @if (product.priceDiscount != null) {
+                                    <p>
+                                        <del class="has-text-grey">{{ product.price | number: '1.2-2' }}</del>
+                                        <span class="has-text-danger has-text-weight-bold ml-2">{{ product.priceDiscount | number: '1.2-2' }}</span>
+                                    </p>
+                                } @else {
+                                    <p class="has-text-weight-bold">{{ product.price | number: '1.2-2' }}</p>
+                                }
+                                @if (product.description) {
+                                    <div class="content">{{ product.description }}</div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</section>

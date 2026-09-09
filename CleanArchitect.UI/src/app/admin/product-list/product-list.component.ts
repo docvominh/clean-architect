@@ -1,8 +1,8 @@
 import { Component, HostListener, inject, signal } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { ProductService } from '../product.service';
-import { Product } from '../product.models';
+import { ProductService } from '../../product/product.service';
+import { Product } from '../../product/product.models';
 
 @Component({
     selector: 'app-product-list',

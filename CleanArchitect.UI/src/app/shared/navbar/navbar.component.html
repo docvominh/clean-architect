@@ -12,7 +12,7 @@
 
     <div class="navbar-menu" [class.is-active]="menuOpen()">
         <div class="navbar-start">
-            <a class="navbar-item" routerLink="/" (click)="menuOpen.set(false)">Account</a>
+            <a class="navbar-item" routerLink="/" (click)="menuOpen.set(false)">Home</a>
             @if (auth.user()?.roles?.includes('Admin')) {
                 <a class="navbar-item" routerLink="/admin/product" (click)="menuOpen.set(false)">Products</a>
             }

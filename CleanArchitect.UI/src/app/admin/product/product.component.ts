@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ProductService } from '../product.service';
+import { ProductService } from '../../product/product.service';
 import { StorageService } from '../storage.service';
 
 @Component({
