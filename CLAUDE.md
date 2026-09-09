@@ -54,3 +54,6 @@
 - Always create test cases for the generated code both positive and negative.
 - Use Shouldly for test assertions, not xUnit's Assert.
 - Structure every test using Arrange, Act, Assert (AAA), with explicit `// Arrange`, `// Act`, and `// Assert` comments in that order. Put setup under Arrange, the behavior being tested under Act, and outcome checks under Assert.
+
+## UI
+- use pnpm, angular 18, bulma css

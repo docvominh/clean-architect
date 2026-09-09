@@ -34,7 +34,23 @@ public class Order : BaseEntity
 
     public OrderStatus Status { get; init; }
 
-    public decimal TotalAmount { get; init; }
+    public decimal TotalAmount { get; private set; }
 
-    public List<OrderProduct> OrderProducts { get; init; } = [];
+    public List<OrderProduct> OrderProducts { get; private set; } = [];
+
+    public void AddProduct(Guid productId, int quantity, decimal unitPrice)
+    {
+        OrderProducts.Add(new OrderProduct(Guid.NewGuid(), CreateBy, Id, productId, quantity, unitPrice));
+        TotalAmount += unitPrice * quantity;
+    }
+
+    public void UpdateProduct(Guid productId, int quantity, decimal unitPrice)
+    {
+        var existing = OrderProducts.FirstOrDefault(p => p.ProductId == productId)
+            ?? throw new InvalidOperationException($"Order '{Id}' does not contain product '{productId}'.");
+
+        OrderProducts.Remove(existing);
+        OrderProducts.Add(new OrderProduct(existing.Id, existing.CreateBy, Id, productId, quantity, unitPrice));
+        TotalAmount = OrderProducts.Sum(p => p.UnitPrice * p.Quantity);
+    }
 }

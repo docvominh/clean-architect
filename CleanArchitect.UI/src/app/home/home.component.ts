@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { ProductService } from '../product/product.service';
 import { Product } from '../product/product.models';
+import { CartService } from '../cart/cart.service';
 
 @Component({
     selector: 'app-home',
@@ -11,6 +12,7 @@ import { Product } from '../product/product.models';
 })
 export class HomeComponent {
     private readonly productService = inject(ProductService);
+    readonly cart = inject(CartService);
     readonly products = signal<Product[]>([]);
     readonly loading = signal(true);
     readonly error = signal('');

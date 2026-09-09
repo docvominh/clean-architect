@@ -63,12 +63,20 @@ resharper_wrap_chained_method_calls = chop_if_long
 resharper_wrap_list_pattern = chop_if_long
 resharper_wrap_object_and_collection_initializer_style = chop_if_long
 resharper_prefer_concrete_value_over_default_highlighting = hint
+resharper_csharp_braces_for_ifelse = required
 
 [*.cs]
 # CodingConventions.md: file-scoped namespaces, usings outside the namespace block.
 csharp_style_namespace_declarations = file_scoped:warning
 csharp_using_directive_placement = outside_namespace:warning
+csharp_braces_for_ifelse = required
+# blank line before return statement
+csharp_blank_lines_before_control_transfer_statements = 1
+csharp_blank_lines_before_block_statements = 1
+csharp_blank_lines_after_block_statements = 1
 
+csharp_blank_lines_around_invocable = 1
+csharp_blank_lines_around_single_line_invocable = 1
 # CodingConventions.md: var only when the type is apparent from the right-hand side.
 # csharp_style_var_for_built_in_types = false:warning
 # csharp_style_var_when_type_is_apparent = true:warning

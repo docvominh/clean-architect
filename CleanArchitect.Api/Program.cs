@@ -1,12 +1,14 @@
 using Azure.Storage.Blobs;
 
 using CleanArchitect.Api;
+using CleanArchitect.Application.OrderAggregate;
 using CleanArchitect.Application.ProductAggregate;
 using CleanArchitect.Application.StorageAggregate;
 using CleanArchitect.Application.UserAggregate;
 using CleanArchitect.Application.UserAggregate.AspnetIdentity;
 using CleanArchitect.Application.UserAggregate.Command;
 using CleanArchitect.Infrastructure;
+using CleanArchitect.Infrastructure.OrderAggregate;
 using CleanArchitect.Infrastructure.ProductAggregate;
 using CleanArchitect.Infrastructure.StorageAggregate;
 using CleanArchitect.Infrastructure.UserAggregate;
@@ -16,6 +18,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
+
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -82,6 +86,7 @@ builder.Services.AddScoped<IUserIdentityService, UserIdentityService>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddSingleton(new BlobServiceClient(builder.Configuration.GetConnectionString("AzureBlobStorage")));
 builder.Services.AddScoped<IStorageService, AzureBlobService>();
 builder.Services.AddHttpContextAccessor();
@@ -92,7 +97,8 @@ builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromA
 builder.Services.AddExceptionHandler<UserExceptionHandler>();
 builder.Services.AddProblemDetails();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
 // Add CORS
 builder.Services.AddCors(options =>
