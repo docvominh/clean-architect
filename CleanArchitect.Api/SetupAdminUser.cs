@@ -10,6 +10,15 @@ public static class SetupAdminUser
 {
     public static async Task SetupAdminUserAsync(this WebApplication app, CancellationToken cancellationToken = default)
     {
+        var adminEmail = app.Configuration["BootstrapAdmin:Email"];
+        var password = app.Configuration["BootstrapAdmin:Password"];
+        var bootstrapConfigured = !string.IsNullOrWhiteSpace(adminEmail) || !string.IsNullOrWhiteSpace(password);
+
+        if (bootstrapConfigured && (string.IsNullOrWhiteSpace(adminEmail) || string.IsNullOrWhiteSpace(password)))
+        {
+            throw new InvalidOperationException("BootstrapAdmin:Email and BootstrapAdmin:Password must both be configured.");
+        }
+
         await using var scope = app.Services.CreateAsyncScope();
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
@@ -19,9 +28,13 @@ public static class SetupAdminUser
                 EnsureIdentitySuccess(await roleManager.CreateAsync(new IdentityRole<Guid>(role)));
             }
 
+        if (!bootstrapConfigured)
+        {
+            return;
+        }
+
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
-        const string adminEmail = "admin@gmail.com";
-        var admin = await userManager.FindByEmailAsync(adminEmail);
+        var admin = await userManager.FindByEmailAsync(adminEmail!);
 
         if (admin is null)
         {
@@ -34,7 +47,7 @@ public static class SetupAdminUser
             };
 
             // Allow the requested bootstrap password without weakening the registration password policy.
-            admin.PasswordHash = userManager.PasswordHasher.HashPassword(admin, "admin");
+            admin.PasswordHash = userManager.PasswordHasher.HashPassword(admin, password!);
             EnsureIdentitySuccess(await userManager.CreateAsync(admin));
         }
 

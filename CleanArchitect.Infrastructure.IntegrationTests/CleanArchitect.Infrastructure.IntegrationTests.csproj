@@ -24,6 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\CleanArchitect.Api\CleanArchitect.Api.csproj"/>
         <ProjectReference Include="..\CleanArchitect.Database\CleanArchitect.Database.csproj"/>
         <ProjectReference Include="..\CleanArchitect.Infrastructure\CleanArchitect.Infrastructure.csproj"/>
     </ItemGroup>

@@ -151,12 +151,12 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
-await app.SetupAdminUserAsync();
 await app.SetupStorageAsync();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    await app.SetupAdminUserAsync();
     app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();
