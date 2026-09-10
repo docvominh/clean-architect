@@ -12,6 +12,8 @@ public class Product : BaseEntity
         string? description = null,
         decimal? priceDiscount = null) : base(id, createBy)
     {
+        Validate(name, manufacturer, price, priceDiscount);
+
         Name = name;
         Manufacturer = manufacturer;
         Price = price;
@@ -41,6 +43,8 @@ public class Product : BaseEntity
         string? description = null,
         decimal? priceDiscount = null)
     {
+        Validate(name, manufacturer, price, priceDiscount);
+
         Name = name;
         Manufacturer = manufacturer;
         Price = price;
@@ -48,5 +52,17 @@ public class Product : BaseEntity
         Description = description;
         PriceDiscount = priceDiscount;
         MarkUpdated(updateBy);
+    }
+
+    private static void Validate(string name, string manufacturer, decimal price, decimal? priceDiscount)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(name);
+        ArgumentException.ThrowIfNullOrWhiteSpace(manufacturer);
+        ArgumentOutOfRangeException.ThrowIfNegative(price);
+
+        if (priceDiscount is decimal discount && (discount < 0 || discount > price))
+        {
+            throw new ArgumentOutOfRangeException(nameof(priceDiscount), "Discounted price must be between zero and the regular price.");
+        }
     }
 }
