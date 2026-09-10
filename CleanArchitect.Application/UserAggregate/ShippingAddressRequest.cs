@@ -13,4 +13,6 @@ public sealed record ShippingAddressRequest
     [Required] public required string Street { get; init; }
 
     [Required] public required string ContactPhoneNumber { get; init; }
+
+    public bool IsDefault { get; init; }
 }

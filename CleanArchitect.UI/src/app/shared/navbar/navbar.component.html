@@ -35,7 +35,7 @@
                     <a class="navbar-link" (click)="toggleUserMenu()">{{ auth.user()?.name || auth.user()?.email }}</a>
                     <div class="navbar-dropdown is-right">
                         @if (!auth.user()?.roles?.includes('Admin')) {
-                            <a class="navbar-item" routerLink="/orders" (click)="closeMenus()">My order</a>
+                            <a class="navbar-item" routerLink="/profile" (click)="closeMenus()">Profile</a>
                         }
                         @if (auth.user()?.roles?.includes('Admin')) {
                             <a class="navbar-item" routerLink="/admin/product" (click)="closeMenus()">Products</a>

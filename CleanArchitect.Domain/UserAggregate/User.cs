@@ -7,12 +7,20 @@ public class User : BaseEntity
         DisplayName = displayName;
     }
 
-    public string? DisplayName { get; init; }
+    public string? DisplayName { get; private set; }
 
     public List<UserAddress> Addresses { get; private set; } = [];
 
+    public void UpdateDisplayName(string? displayName)
+    {
+        DisplayName = displayName;
+    }
+
     public void UpdateAddress(List<UserAddress> addresses)
     {
-        Addresses = addresses;
+        // Mutate the tracked list in place rather than replacing the reference, so EF Core's
+        // collection change tracking can correctly diff old (removed) vs new (added) addresses.
+        Addresses.Clear();
+        Addresses.AddRange(addresses);
     }
 }

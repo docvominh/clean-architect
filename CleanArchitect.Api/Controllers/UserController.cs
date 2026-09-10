@@ -1,7 +1,9 @@
 using System.Security.Claims;
 
+using CleanArchitect.Application.UserAggregate;
 using CleanArchitect.Application.UserAggregate.AspnetIdentity;
 using CleanArchitect.Application.UserAggregate.Command;
+using CleanArchitect.Application.UserAggregate.Query;
 
 using MediatR;
 
@@ -41,5 +43,23 @@ public class UserController(ISender sender) : ControllerBase
         await sender.Send(new RevokeTokenCommand(userId), cancellationToken);
 
         return NoContent();
+    }
+
+    [HttpGet("profile")]
+    [Authorize]
+    public Task<ProfileDto> GetProfile(CancellationToken cancellationToken)
+    {
+        var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+        return sender.Send(new GetMyProfileQuery(userId), cancellationToken);
+    }
+
+    [HttpPut("profile")]
+    [Authorize]
+    public Task<ProfileDto> UpdateProfile(UpdateProfileRequest request, CancellationToken cancellationToken)
+    {
+        var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+        return sender.Send(new UpdateProfileCommand(userId, request), cancellationToken);
     }
 }

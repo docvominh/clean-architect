@@ -10,7 +10,7 @@ import { ProductListComponent } from './admin/product-list/product-list.componen
 import { ProductComponent } from './admin/product/product.component';
 import { AdminOrderListComponent } from './admin/order-list/order-list.component';
 import { CheckoutComponent } from './cart/checkout.component';
-import { OrderHistoryComponent } from './order/order-history.component';
+import { ProfileComponent } from './profile/profile.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -20,7 +20,7 @@ export const routes: Routes = [
     { path: 'admin/product/:id/edit', component: ProductComponent, canActivate: [authGuard, adminGuard] },
     { path: 'admin/order', component: AdminOrderListComponent, canActivate: [authGuard, adminGuard] },
     { path: 'cart', component: CheckoutComponent, canActivate: [authGuard] },
-    { path: 'orders', component: OrderHistoryComponent, canActivate: [authGuard, userGuard] },
+    { path: 'profile', component: ProfileComponent, canActivate: [authGuard, userGuard] },
     { path: '', pathMatch: 'full', component: HomeComponent, canActivate: [authGuard] },
     { path: '**', redirectTo: '' }
 ];

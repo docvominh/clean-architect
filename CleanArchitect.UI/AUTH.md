@@ -18,6 +18,22 @@ base uses the UI origin. Browser requests include credentials for refresh cookie
 configure the API CORS policy with the exact UI origin and AllowCredentials.
 Trust the API's HTTPS certificate in your browser. No development proxy is used.
 
+## Administrator bootstrap
+
+The API's `appsettings.Development.json` supplies the demo administrator email
+and password through `BootstrapAdmin:Email` and `BootstrapAdmin:Password`.
+`Program.cs` calls `SetupAdminUserAsync` only when `app.Environment.IsDevelopment()`
+is true. There are no fallback credentials in code. Development permits the configured
+demo password; incomplete credentials fail startup, and missing credentials create roles only.
+
+Other environments skip this bootstrap entirely, even when bootstrap credentials
+are configured. Provision the `Admin` and `User` roles and administrator accounts
+separately before using authentication in those environments.
+
+This change does not remove
+previously created demo accounts: if one exists outside development, remove its
+administrator access or rotate its password and revoke its existing sessions.
+
 ## Usage
 
 - `/login` and `/register` are public; `/` is the protected account page.

@@ -1,0 +1,132 @@
+<section class="section">
+    <div class="container">
+        <h1 class="title">Profile</h1>
+
+        @if (loading()) {
+            <p>Loading...</p>
+        } @else {
+            <div class="box">
+                <form #form="ngForm" (ngSubmit)="submit()">
+                    <div class="field">
+                        <label class="label" for="email">Email</label>
+                        <div class="control">
+                            <input class="input" id="email" [value]="email" disabled />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label" for="displayName">Display name</label>
+                        <div class="control">
+                            <input class="input" id="displayName" name="displayName" [(ngModel)]="displayName" autocomplete="name" />
+                        </div>
+                    </div>
+
+                    <h2 class="title is-5">Shipping addresses</h2>
+                    @for (address of addresses; track address.id) {
+                        <div class="box p-3 mb-3">
+                            <p class="heading mb-2">Address {{ $index + 1 }}</p>
+                            <div class="columns is-mobile is-multiline is-variable is-2">
+                                <div class="column is-half">
+                                    <div class="field">
+                                        <label class="label is-small" [for]="'country-' + address.id">Country</label>
+                                        <div class="control">
+                                            <input
+                                                class="input is-small"
+                                                [id]="'country-' + address.id"
+                                                [name]="'country-' + address.id"
+                                                [(ngModel)]="address.country"
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="column is-half">
+                                    <div class="field">
+                                        <label class="label is-small" [for]="'state-' + address.id">State / Province</label>
+                                        <div class="control">
+                                            <input
+                                                class="input is-small"
+                                                [id]="'state-' + address.id"
+                                                [name]="'state-' + address.id"
+                                                [(ngModel)]="address.state"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="column is-half">
+                                    <div class="field">
+                                        <label class="label is-small" [for]="'city-' + address.id">City</label>
+                                        <div class="control">
+                                            <input
+                                                class="input is-small"
+                                                [id]="'city-' + address.id"
+                                                [name]="'city-' + address.id"
+                                                [(ngModel)]="address.city"
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="column is-half">
+                                    <div class="field">
+                                        <label class="label is-small" [for]="'street-' + address.id">Street</label>
+                                        <div class="control">
+                                            <input
+                                                class="input is-small"
+                                                [id]="'street-' + address.id"
+                                                [name]="'street-' + address.id"
+                                                [(ngModel)]="address.street"
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="column is-half">
+                                    <div class="field">
+                                        <label class="label is-small" [for]="'phone-' + address.id">Contact phone number</label>
+                                        <div class="control">
+                                            <input
+                                                class="input is-small"
+                                                [id]="'phone-' + address.id"
+                                                [name]="'phone-' + address.id"
+                                                [(ngModel)]="address.contactPhoneNumber"
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="is-flex is-justify-content-space-between is-align-items-center mt-2">
+                                <label class="radio is-size-7">
+                                    <input type="radio" name="defaultAddress" [value]="address.id" [(ngModel)]="defaultAddressId" />
+                                    Default address
+                                </label>
+                                <button type="button" class="button is-danger is-light is-small" (click)="removeAddress(address.id)">Remove</button>
+                            </div>
+                        </div>
+                    }
+                    <div class="field">
+                        <div class="control">
+                            <button type="button" class="button is-light is-fullwidth" (click)="addAddress()">+ Add address</button>
+                        </div>
+                    </div>
+
+                    @if (error()) {
+                        <p role="alert" class="help is-danger">{{ error() }}</p>
+                    }
+                    @if (saved()) {
+                        <p class="help is-success">Profile updated.</p>
+                    }
+                    <div class="field">
+                        <div class="control">
+                            <button type="submit" class="button is-primary is-fullwidth" [disabled]="form.invalid || busy()">
+                                {{ busy() ? 'Saving...' : 'Save changes' }}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        }
+    </div>
+</section>
+
+<app-order-history />
