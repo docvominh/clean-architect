@@ -161,7 +161,7 @@ public sealed class ProductRepositoryTests(MsSqlContainerFixture fixture) : Repo
         var editor = Guid.NewGuid();
 
         // Act
-        loaded.UpdateDetails(editor, "Updated", "New manufacturer", 42.12m);
+        loaded.Update(editor, "Updated", "New manufacturer", 42.12m);
         await Repository.SaveChangesAsync(CancellationToken.None);
 
         // Assert

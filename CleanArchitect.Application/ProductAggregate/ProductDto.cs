@@ -1,6 +1,4 @@
-﻿using CleanArchitect.Domain.ProductAggregate;
-
-namespace CleanArchitect.Application.ProductAggregate;
+﻿namespace CleanArchitect.Application.ProductAggregate;
 
 public class ProductDto
 {

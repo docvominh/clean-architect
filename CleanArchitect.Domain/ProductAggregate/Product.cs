@@ -34,7 +34,7 @@ public class Product : BaseEntity
 
     public decimal? PriceDiscount { get; private set; }
 
-    public void UpdateDetails(
+    public void Update(
         Guid updateBy,
         string name,
         string manufacturer,
@@ -60,7 +60,7 @@ public class Product : BaseEntity
         ArgumentException.ThrowIfNullOrWhiteSpace(manufacturer);
         ArgumentOutOfRangeException.ThrowIfNegative(price);
 
-        if (priceDiscount is decimal discount && (discount < 0 || discount > price))
+        if (priceDiscount != null && (priceDiscount < 0 || priceDiscount > price))
         {
             throw new ArgumentOutOfRangeException(nameof(priceDiscount), "Discounted price must be between zero and the regular price.");
         }

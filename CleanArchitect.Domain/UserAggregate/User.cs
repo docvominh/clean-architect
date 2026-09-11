@@ -9,7 +9,7 @@ public class User : BaseEntity
 
     public string? DisplayName { get; private set; }
 
-    public List<UserAddress> Addresses { get; private set; } = [];
+    public List<UserAddress> Addresses { get; } = [];
 
     public void UpdateDisplayName(string? displayName)
     {

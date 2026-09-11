@@ -13,8 +13,8 @@ namespace CleanArchitect.Application.UnitTests.UserAggregate;
 
 public class UpdateProfileCommandHandlerTests
 {
-    private readonly Mock<IUserRepository> users = new();
     private readonly Mock<IUserIdentityService> identity = new();
+    private readonly Mock<IUserRepository> users = new();
 
     private static UpdateProfileRequest Request(params ShippingAddressRequest[] addresses)
     {
@@ -23,7 +23,8 @@ public class UpdateProfileCommandHandlerTests
 
     private static ShippingAddressRequest Address(string city, bool isDefault = false)
     {
-        return new ShippingAddressRequest { Country = "Australia", City = city, Street = "1 Main St", ContactPhoneNumber = "0400000000", IsDefault = isDefault };
+        return new ShippingAddressRequest
+            { Country = "Australia", City = city, Street = "1 Main St", ContactPhoneNumber = "0400000000", IsDefault = isDefault };
     }
 
     [Fact]

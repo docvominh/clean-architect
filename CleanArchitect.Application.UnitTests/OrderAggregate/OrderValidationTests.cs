@@ -1,5 +1,7 @@
 using CleanArchitect.Domain.OrderAggregate;
+
 using Shouldly;
+
 using Xunit;
 
 namespace CleanArchitect.Application.UnitTests.OrderAggregate;
@@ -82,8 +84,8 @@ public class OrderValidationTests
         var original = order.OrderProducts[0];
 
         // Act
-        Action add = () => order.AddProduct(Guid.NewGuid(), quantity, unitPrice);
-        Action update = () => order.UpdateProduct(productId, quantity, unitPrice);
+        var add = () => order.AddProduct(Guid.NewGuid(), quantity, unitPrice);
+        var update = () => order.UpdateProduct(productId, quantity, unitPrice);
 
         // Assert
         Should.Throw<ArgumentOutOfRangeException>(add).ParamName.ShouldBe(parameter);
@@ -99,7 +101,7 @@ public class OrderValidationTests
         var order = new Order(Guid.NewGuid(), Guid.NewGuid(), "Country", "City", "Street", "Phone");
 
         // Act
-        Action act = () => order.UpdateStatus((OrderStatus)999);
+        var act = () => order.UpdateStatus((OrderStatus)999);
 
         // Assert
         Should.Throw<ArgumentOutOfRangeException>(act).ParamName.ShouldBe("status");

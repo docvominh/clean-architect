@@ -1,4 +1,3 @@
-using CleanArchitect.Application.ProductAggregate.Query;
 using CleanArchitect.Domain.ProductAggregate;
 
 using MediatR;

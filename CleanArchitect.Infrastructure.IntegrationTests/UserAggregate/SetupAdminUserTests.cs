@@ -31,7 +31,7 @@ public sealed class SetupAdminUserTests(MsSqlContainerFixture fixture) : Reposit
         // Assert
         (await Context.Users.CountAsync()).ShouldBe(0);
         (await Context.UserProfiles.CountAsync()).ShouldBe(0);
-        (await Context.Roles.Select(role => role.Name).ToListAsync()).ShouldBe(["Admin", "User"], ignoreOrder: true);
+        (await Context.Roles.Select(role => role.Name).ToListAsync()).ShouldBe(["Admin", "User"], true);
     }
 
     [Fact]
@@ -74,7 +74,7 @@ public sealed class SetupAdminUserTests(MsSqlContainerFixture fixture) : Reposit
         await using var app = CreateApp(email, password);
 
         // Act
-        Func<Task> act = () => app.SetupAdminUserAsync();
+        var act = () => app.SetupAdminUserAsync();
 
         // Assert
         var error = await Should.ThrowAsync<InvalidOperationException>(act);
@@ -90,7 +90,7 @@ public sealed class SetupAdminUserTests(MsSqlContainerFixture fixture) : Reposit
         await using var app = CreateApp("invalid user name", "demo");
 
         // Act
-        Func<Task> act = () => app.SetupAdminUserAsync();
+        var act = () => app.SetupAdminUserAsync();
 
         // Assert
         var error = await Should.ThrowAsync<InvalidOperationException>(act);
@@ -125,16 +125,18 @@ public sealed class SetupAdminUserTests(MsSqlContainerFixture fixture) : Reposit
     {
         var builder = WebApplication.CreateBuilder(new WebApplicationOptions { EnvironmentName = "Development" });
         builder.Configuration.Sources.Clear();
-        builder.Configuration.AddInMemoryCollection(new Dictionary<string, string?>
-        {
-            ["BootstrapAdmin:Email"] = email,
-            ["BootstrapAdmin:Password"] = password
-        });
+        builder.Configuration.AddInMemoryCollection(
+            new Dictionary<string, string?>
+            {
+                ["BootstrapAdmin:Email"] = email,
+                ["BootstrapAdmin:Password"] = password
+            });
         builder.Services.AddScoped(_ => CreateDbContext());
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddIdentityCore<AppUser>(options => options.Password.RequiredLength = 8)
             .AddRoles<IdentityRole<Guid>>()
             .AddEntityFrameworkStores<AppDbContext>();
+
         return builder.Build();
     }
 

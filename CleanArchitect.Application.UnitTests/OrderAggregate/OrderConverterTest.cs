@@ -43,7 +43,7 @@ public class OrderConverterTest
         result.Products.ShouldBe(
         [
             new OrderProductDto(firstProductId, "Widget", 2, 12.50m),
-                new OrderProductDto(secondProductId, "Gadget", 3, 7.25m)
+            new OrderProductDto(secondProductId, "Gadget", 3, 7.25m)
         ]);
     }
 

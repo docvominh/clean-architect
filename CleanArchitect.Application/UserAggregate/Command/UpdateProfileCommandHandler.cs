@@ -17,7 +17,11 @@ public sealed class UpdateProfileCommandHandler(IUserRepository users, IUserIden
 
         var addresses = request.Request.Addresses;
         var defaultIndex = addresses.FindIndex(address => address.IsDefault);
-        if (defaultIndex < 0) defaultIndex = 0;
+
+        if (defaultIndex < 0)
+        {
+            defaultIndex = 0;
+        }
 
         var newAddresses = addresses.Select((address, i) => new UserAddress(
                 Guid.NewGuid(),

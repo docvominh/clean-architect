@@ -1,5 +1,3 @@
-using CleanArchitect.Application.ProductAggregate.Query;
-
 using MediatR;
 
 namespace CleanArchitect.Application.ProductAggregate.Command;
@@ -11,7 +9,7 @@ public sealed class UpdateProductCommandHandler(IProductRepository products) : I
         var product = await products.FindAsync(request.Id, cancellationToken)
             ?? throw new NotFoundException($"Product '{request.Id}' was not found.");
 
-        product.UpdateDetails(
+        product.Update(
             request.UpdatedBy,
             request.Request.Name,
             request.Request.Manufacturer,

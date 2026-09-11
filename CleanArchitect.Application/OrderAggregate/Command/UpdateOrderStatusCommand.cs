@@ -1,4 +1,3 @@
-using CleanArchitect.Application.OrderAggregate.Query;
 using CleanArchitect.Domain.OrderAggregate;
 
 using MediatR;

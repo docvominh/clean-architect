@@ -1,5 +1,3 @@
-using CleanArchitect.Application.ProductAggregate.Query;
-
 using MediatR;
 
 namespace CleanArchitect.Application.ProductAggregate.Command;

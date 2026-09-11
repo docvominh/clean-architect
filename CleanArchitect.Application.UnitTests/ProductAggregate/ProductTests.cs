@@ -1,5 +1,7 @@
 using CleanArchitect.Domain.ProductAggregate;
+
 using Shouldly;
+
 using Xunit;
 
 namespace CleanArchitect.Application.UnitTests.ProductAggregate;
@@ -43,7 +45,7 @@ public class ProductTests
 
         // Assert
         product.Price.ShouldBe(price);
-        product.PriceDiscount.ShouldBe(discount is null ? null : (decimal?)discount.Value);
+        product.PriceDiscount.ShouldBe(discount is null ? null : discount.Value);
     }
 
     [Fact]
@@ -54,7 +56,7 @@ public class ProductTests
         var product = new Product(Guid.NewGuid(), creator, "Original", "Maker", 10, priceDiscount: 5);
 
         // Act
-        Action act = () => product.UpdateDetails(Guid.NewGuid(), "Changed", "Other", 2, priceDiscount: 3);
+        var act = () => product.Update(Guid.NewGuid(), "Changed", "Other", 2, priceDiscount: 3);
 
         // Assert
         Should.Throw<ArgumentOutOfRangeException>(act).ParamName.ShouldBe("priceDiscount");

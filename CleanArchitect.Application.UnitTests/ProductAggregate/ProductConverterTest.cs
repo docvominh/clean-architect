@@ -13,7 +13,8 @@ public class ProductConverterTest
     public void ToProductDto_ShouldMapEveryProperty()
     {
         // Arrange
-        var product = new Product(Guid.NewGuid(), Guid.NewGuid(), "Widget", "Acme", 29.99m,
+        var product = new Product(
+            Guid.NewGuid(), Guid.NewGuid(), "Widget", "Acme", 29.99m,
             "https://example.com/widget.png", "A useful widget", 19.99m);
 
         // Act
@@ -54,9 +55,11 @@ public class ProductConverterTest
         // Arrange
         Product[] products =
         [
-            new(Guid.NewGuid(), Guid.NewGuid(), "Widget", "Acme", 29.99m,
+            new(
+                Guid.NewGuid(), Guid.NewGuid(), "Widget", "Acme", 29.99m,
                 "https://example.com/widget.png", "A useful widget", 19.99m),
-            new(Guid.NewGuid(), Guid.NewGuid(), "Gadget", "Contoso", 49.99m,
+            new(
+                Guid.NewGuid(), Guid.NewGuid(), "Gadget", "Contoso", 49.99m,
                 "https://example.com/gadget.png", "A useful gadget", 39.99m)
         ];
 
@@ -65,6 +68,7 @@ public class ProductConverterTest
 
         // Assert
         result.Products.Count.ShouldBe(2);
+
         for (var index = 0; index < products.Length; index++)
         {
             var expected = products[index];
@@ -99,7 +103,10 @@ public class ProductConverterTest
         IReadOnlyCollection<Product> products = null!;
 
         // Act
-        void Action() => ProductConverter.ToProductsDto(products);
+        void Action()
+        {
+            ProductConverter.ToProductsDto(products);
+        }
 
         // Assert
         Should.Throw<ArgumentNullException>((Action)Action);

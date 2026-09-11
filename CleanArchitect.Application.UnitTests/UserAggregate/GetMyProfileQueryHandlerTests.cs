@@ -13,8 +13,8 @@ namespace CleanArchitect.Application.UnitTests.UserAggregate;
 
 public class GetMyProfileQueryHandlerTests
 {
-    private readonly Mock<IUserRepository> users = new();
     private readonly Mock<IUserIdentityService> identity = new();
+    private readonly Mock<IUserRepository> users = new();
 
     [Fact]
     public async Task Handler_GetMyProfile_ShouldMapEmailDisplayNameAndAddresses()

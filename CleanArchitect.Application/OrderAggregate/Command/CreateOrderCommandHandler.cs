@@ -1,4 +1,3 @@
-using CleanArchitect.Application.OrderAggregate.Query;
 using CleanArchitect.Application.ProductAggregate;
 using CleanArchitect.Domain.OrderAggregate;
 
