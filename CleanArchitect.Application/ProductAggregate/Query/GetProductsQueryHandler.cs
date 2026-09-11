@@ -8,6 +8,6 @@ public sealed class GetProductsQueryHandler(IProductRepository productRepository
     {
         var products = await productRepository.GetAllAsync(cancellationToken);
 
-        return new ProductsDto(products.Select(ProductDto.From).ToList());
+        return ProductConverter.ToProductsDto(products);
     }
 }

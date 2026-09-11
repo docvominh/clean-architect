@@ -9,6 +9,6 @@ public sealed class GetProductByIdQueryHandler(IProductRepository productReposit
         var product = await productRepository.FindAsync(request.Id, cancellationToken)
             ?? throw new NotFoundException($"Product '{request.Id}' was not found.");
 
-        return ProductDto.From(product);
+        return ProductConverter.ToProductDto(product);
     }
 }

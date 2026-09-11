@@ -1,4 +1,4 @@
-﻿namespace CleanArchitect.Application.ProductAggregate.Query;
+﻿namespace CleanArchitect.Application.ProductAggregate;
 
 public class ProductsDto
 {

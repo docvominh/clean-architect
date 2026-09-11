@@ -22,6 +22,6 @@ public sealed class CreateProductCommandHandler(IProductRepository products) : I
         products.Add(product);
         await products.SaveChangesAsync(cancellationToken);
 
-        return ProductDto.From(product);
+        return ProductConverter.ToProductDto(product);
     }
 }
