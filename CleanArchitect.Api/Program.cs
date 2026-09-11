@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using Azure.Storage.Blobs;
 
 using CleanArchitect.Api;
+using CleanArchitect.Application.ExternalSystem;
 using CleanArchitect.Application.OrderAggregate;
 using CleanArchitect.Application.ProductAggregate;
 using CleanArchitect.Application.StorageAggregate;
@@ -10,6 +11,7 @@ using CleanArchitect.Application.UserAggregate;
 using CleanArchitect.Application.UserAggregate.AspnetIdentity;
 using CleanArchitect.Application.UserAggregate.Command;
 using CleanArchitect.Infrastructure;
+using CleanArchitect.Infrastructure.ExternalSystem;
 using CleanArchitect.Infrastructure.OrderAggregate;
 using CleanArchitect.Infrastructure.ProductAggregate;
 using CleanArchitect.Infrastructure.StorageAggregate;
@@ -92,6 +94,8 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddSingleton(new BlobServiceClient(builder.Configuration.GetConnectionString("AzureBlobStorage")));
 builder.Services.AddScoped<IStorageService, AzureBlobService>();
+builder.Services.AddHttpClient<IExchangeRate, FrankfurterExchangeRateClient>(
+    client => client.BaseAddress = new Uri("https://api.frankfurter.dev/v1/"));
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IRefreshTokenCookie, RefreshTokenCookie>();
 builder.Services.AddScoped<AuthSessionService>();

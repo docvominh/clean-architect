@@ -16,6 +16,37 @@
         </div>
 
         <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons has-addons">
+                    <button
+                        type="button"
+                        class="button is-small"
+                        [class.is-primary]="currency.currency() === 'USD'"
+                        (click)="currency.setCurrency('USD')"
+                        aria-label="US Dollar"
+                    >
+                        🇺🇸
+                    </button>
+                    <button
+                        type="button"
+                        class="button is-small"
+                        [class.is-primary]="currency.currency() === 'GBP'"
+                        (click)="currency.setCurrency('GBP')"
+                        aria-label="British Pound"
+                    >
+                        🇬🇧
+                    </button>
+                    <button
+                        type="button"
+                        class="button is-small"
+                        [class.is-primary]="currency.currency() === 'EUR'"
+                        (click)="currency.setCurrency('EUR')"
+                        aria-label="Euro"
+                    >
+                        🇩🇪
+                    </button>
+                </div>
+            </div>
             <a class="navbar-item" routerLink="/cart" (click)="closeMenus()" style="position: relative" aria-label="Cart">
                 <span class="icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

@@ -27,11 +27,13 @@
                                 <p class="subtitle is-6">{{ product.manufacturer }}</p>
                                 @if (product.priceDiscount != null) {
                                     <p>
-                                        <del class="has-text-grey">{{ product.price | number: '1.2-2' }}</del>
-                                        <span class="has-text-danger has-text-weight-bold ml-2">{{ product.priceDiscount | number: '1.2-2' }}</span>
+                                        <del class="has-text-grey">{{ currency.convert(product.price) | currency: currency.currency() }}</del>
+                                        <span class="has-text-danger has-text-weight-bold ml-2">{{
+                                            currency.convert(product.priceDiscount) | currency: currency.currency()
+                                        }}</span>
                                     </p>
                                 } @else {
-                                    <p class="has-text-weight-bold">{{ product.price | number: '1.2-2' }}</p>
+                                    <p class="has-text-weight-bold">{{ currency.convert(product.price) | currency: currency.currency() }}</p>
                                 }
                                 @if (product.description) {
                                     <div class="content">{{ product.description }}</div>

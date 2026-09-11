@@ -4,6 +4,7 @@ import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter } from 'rxjs';
 import { AuthService } from '../../user/auth.service';
 import { CartService } from '../../cart/cart.service';
+import { CurrencyService } from '../currency/currency.service';
 
 @Component({
     selector: 'app-navbar',
@@ -14,6 +15,7 @@ import { CartService } from '../../cart/cart.service';
 export class NavbarComponent {
     readonly auth = inject(AuthService);
     readonly cart = inject(CartService);
+    readonly currency = inject(CurrencyService);
     private readonly router = inject(Router);
     private readonly elementRef = inject(ElementRef<HTMLElement>);
     readonly menuOpen = signal(false);
