@@ -30,19 +30,19 @@
 - Skip this for simple, obvious fixes. Don't overengineer
 - Challenge your own work before presenting it
 
-### 5. Skills usage
+### Skills
 
-- Use skills for any task that requires a capability
-- Discover repository skills in `.agents/skills/`; project configuration lives in `.codex/config.toml`. Read the relevant `SKILL.md` before using a capability.
-- Invoke skills with natural language
-- Each skill is one independent capability
+- Do not inspect skills unless the task clearly requires one.
+- Use at most one relevant skill by default.
+- Read additional skills only when the first skill is insufficient.
+- Do not scan `.agents/skills/` for ordinary coding tasks.
 
-## Core Principles
+### Core Principles
 
 - **Simplicity First**: Make every change as simple as possible. Impact minimal code
 - **No Laziness**: Find root causes. No temporary fixes. Senior developer standards
 
-## Project General Instructions
+### Project General Instructions
 
 - .NET 10, Csharp 14, AzureSQL, Aspnet Identity, Azure blob storage
 - Prefer records for immutable DTOs.
@@ -52,7 +52,7 @@
 - Minimize the amount of code generated.
 - Domain project entities: only a constructor is allowed to set property values. No public setters — use `init` (or private `set`) plus a constructor that takes the required fields, so an entity can never exist in an invalid state.
 
-## Test
+### Test
 - Library: xUnit, Shouldly, Moq
 - Project has unit tests (*.UnitTests) and integration tests (*.IntegrationTests).
 - Always create test cases for the generated code both positive and negative.
