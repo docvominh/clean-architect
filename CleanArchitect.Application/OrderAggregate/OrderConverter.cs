@@ -1,20 +1,10 @@
 using CleanArchitect.Domain.OrderAggregate;
 
-namespace CleanArchitect.Application.OrderAggregate.Query;
+namespace CleanArchitect.Application.OrderAggregate;
 
-public sealed record OrderDto(
-    Guid Id,
-    OrderStatus Status,
-    decimal TotalAmount,
-    DateTimeOffset CreatedAt,
-    string Country,
-    string? State,
-    string City,
-    string Street,
-    string ContactPhoneNumber,
-    IReadOnlyList<OrderProductDto> Products)
+public static class OrderConverter
 {
-    public static OrderDto From(Order order, IReadOnlyDictionary<Guid, string> productNames)
+    public static OrderDto ToOrderDto(Order order, IReadOnlyDictionary<Guid, string> productNames)
     {
         return new OrderDto(
             order.Id,
@@ -30,6 +20,9 @@ public sealed record OrderDto(
                 .Select(op => new OrderProductDto(op.ProductId, productNames.GetValueOrDefault(op.ProductId, "Unknown product"), op.Quantity, op.UnitPrice))
                 .ToList());
     }
-}
 
-public sealed record OrderProductDto(Guid ProductId, string ProductName, int Quantity, decimal UnitPrice);
+    public static OrdersDto ToOrdersDto(IReadOnlyCollection<Order> orders, IReadOnlyDictionary<Guid, string> productNames)
+    {
+        return new OrdersDto(orders.Select(order => ToOrderDto(order, productNames)).ToList());
+    }
+}

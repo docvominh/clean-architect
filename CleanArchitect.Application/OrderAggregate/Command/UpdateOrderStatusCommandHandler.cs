@@ -17,6 +17,6 @@ public sealed class UpdateOrderStatusCommandHandler(IOrderRepository orders, IPr
 
         var productNames = (await products.GetAllAsync(cancellationToken)).ToDictionary(p => p.Id, p => p.Name);
 
-        return OrderDto.From(order, productNames);
+        return OrderConverter.ToOrderDto(order, productNames);
     }
 }

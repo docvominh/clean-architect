@@ -17,6 +17,13 @@ public sealed class ProductRepository(AppDbContext dbContext) : IProductReposito
         return dbContext.Products.AsNoTracking().ToListAsync(cancellationToken);
     }
 
+    public Task<List<Product>> GetByIdsAsync(IReadOnlyList<Guid> ids, CancellationToken cancellationToken)
+    {
+        return dbContext.Products.AsNoTracking()
+            .Where(product => ids.Contains(product.Id))
+            .ToListAsync(cancellationToken);
+    }
+
     public void Add(Product product)
     {
         dbContext.Products.Add(product);

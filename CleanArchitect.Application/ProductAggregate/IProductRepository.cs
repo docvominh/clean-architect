@@ -8,6 +8,8 @@ public interface IProductRepository
 
     Task<List<Product>> GetAllAsync(CancellationToken cancellationToken);
 
+    Task<List<Product>> GetByIdsAsync(IReadOnlyList<Guid> ids, CancellationToken cancellationToken);
+
     void Add(Product product);
 
     void Remove(Product product);

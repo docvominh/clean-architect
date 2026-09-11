@@ -103,6 +103,46 @@ public sealed class ProductRepositoryTests(MsSqlContainerFixture fixture) : Repo
     }
 
     [Fact]
+    public async Task GetByIdsAsync_ReturnsOnlyMatchingProductsWithoutDuplicatesOrTracking()
+    {
+        // Arrange
+        var first = CreateProduct("First");
+        var second = CreateProduct("Second");
+        Repository.Add(first);
+        Repository.Add(second);
+        Repository.Add(CreateProduct("Unrequested"));
+        await Repository.SaveChangesAsync(CancellationToken.None);
+        await using var reading = CreateDbContext();
+
+        // Act
+        var result = await new ProductRepository(reading).GetByIdsAsync(
+            [second.Id, first.Id, first.Id, Guid.NewGuid()], CancellationToken.None);
+
+        // Assert
+        result.Count.ShouldBe(2);
+        result.ShouldContain(p => p.Id == first.Id && p.Name == "First");
+        result.ShouldContain(p => p.Id == second.Id && p.Name == "Second");
+        reading.ChangeTracker.Entries<Product>().ShouldBeEmpty();
+    }
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public async Task GetByIdsAsync_WithEmptyOrMissingIds_ShouldReturnEmpty(bool emptyIds)
+    {
+        // Arrange
+        Repository.Add(CreateProduct());
+        await Repository.SaveChangesAsync(CancellationToken.None);
+        IReadOnlyList<Guid> ids = emptyIds ? [] : [Guid.NewGuid()];
+
+        // Act
+        var result = await Repository.GetByIdsAsync(ids, CancellationToken.None);
+
+        // Assert
+        result.ShouldBeEmpty();
+    }
+
+    [Fact]
     public async Task SaveChangesAsync_PersistsTrackedUpdatesAndClearsOptionalFields()
     {
         // Arrange

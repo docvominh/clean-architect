@@ -1,4 +1,4 @@
-namespace CleanArchitect.Application.OrderAggregate.Query;
+namespace CleanArchitect.Application.OrderAggregate;
 
 public class OrdersDto
 {

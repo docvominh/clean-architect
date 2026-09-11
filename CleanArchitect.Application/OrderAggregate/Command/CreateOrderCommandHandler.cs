@@ -33,6 +33,6 @@ public sealed class CreateOrderCommandHandler(IOrderRepository orders, IProductR
         orders.Add(order);
         await orders.SaveChangesAsync(cancellationToken);
 
-        return OrderDto.From(order, productNames);
+        return OrderConverter.ToOrderDto(order, productNames);
     }
 }

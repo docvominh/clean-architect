@@ -4,13 +4,14 @@ using MediatR;
 
 namespace CleanArchitect.Application.OrderAggregate.Query;
 
-public sealed class GetAllOrdersQueryHandler(IOrderRepository orders, IProductRepository products) : IRequestHandler<GetAllOrdersQuery, OrdersDto>
+public sealed class GetAllOrdersQueryHandler(IOrderRepository orders, IProductRepository productRepository) : IRequestHandler<GetAllOrdersQuery, OrdersDto>
 {
     public async Task<OrdersDto> Handle(GetAllOrdersQuery request, CancellationToken cancellationToken)
     {
         var allOrders = await orders.GetAllAsync(cancellationToken);
-        var productNames = (await products.GetAllAsync(cancellationToken)).ToDictionary(p => p.Id, p => p.Name);
+        var productIds = allOrders.SelectMany(order => order.OrderProducts).Select(product => product.ProductId).Distinct().ToList();
+        var productNames = (await productRepository.GetByIdsAsync(productIds, cancellationToken)).ToDictionary(p => p.Id, p => p.Name);
 
-        return new OrdersDto(allOrders.Select(o => OrderDto.From(o, productNames)).ToList());
+        return OrderConverter.ToOrdersDto(allOrders, productNames);
     }
 }
