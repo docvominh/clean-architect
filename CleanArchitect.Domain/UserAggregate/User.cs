@@ -16,7 +16,7 @@ public class User : BaseEntity
         DisplayName = displayName;
     }
 
-    public void UpdateAddress(List<UserAddress> addresses)
+    public void UpdateAddress(IReadOnlyCollection<UserAddress> addresses)
     {
         // Mutate the tracked list in place rather than replacing the reference, so EF Core's
         // collection change tracking can correctly diff old (removed) vs new (added) addresses.

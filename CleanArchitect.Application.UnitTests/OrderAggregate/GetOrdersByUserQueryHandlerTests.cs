@@ -34,12 +34,12 @@ public class GetOrdersByUserQueryHandlerTests
 
         // Assert
         result.Orders.ShouldHaveSingleItem();
-        result.Orders[0].Id.ShouldBe(order.Id);
-        result.Orders[0].CreatedAt.ShouldBe(order.CreatedAt);
-        result.Orders[0].Products.ShouldHaveSingleItem();
-        result.Orders[0].Products[0].ProductName.ShouldBe("Widget");
-        result.Orders[0].Products[0].Quantity.ShouldBe(2);
-        result.Orders[0].Products[0].UnitPrice.ShouldBe(10m);
+        result.Orders.ShouldHaveSingleItem().Id.ShouldBe(order.Id);
+        result.Orders.ShouldHaveSingleItem().CreatedAt.ShouldBe(order.CreatedAt);
+        result.Orders.ShouldHaveSingleItem().Products.ShouldHaveSingleItem();
+        result.Orders.ShouldHaveSingleItem().Products[0].ProductName.ShouldBe("Widget");
+        result.Orders.ShouldHaveSingleItem().Products[0].Quantity.ShouldBe(2);
+        result.Orders.ShouldHaveSingleItem().Products[0].UnitPrice.ShouldBe(10m);
     }
 
     [Fact]
@@ -57,6 +57,6 @@ public class GetOrdersByUserQueryHandlerTests
         var result = await handler.Handle(new GetOrdersByUserQuery(userId), default);
 
         // Assert
-        result.Orders[0].Products[0].ProductName.ShouldBe("Unknown product");
+        result.Orders.ShouldHaveSingleItem().Products[0].ProductName.ShouldBe("Unknown product");
     }
 }

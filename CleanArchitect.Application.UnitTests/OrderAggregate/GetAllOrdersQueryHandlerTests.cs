@@ -80,7 +80,6 @@ public class GetAllOrdersQueryHandlerTests
         var result = await handler.Handle(new GetAllOrdersQuery(), default);
 
         // Assert
-        result.Orders.Count.ShouldBe(1);
-        result.Orders[0].Products.ShouldBe([new OrderProductDto(productId, "Unknown product", 2, 10m)]);
+        result.Orders.ShouldHaveSingleItem().Products.ShouldBe([new OrderProductDto(productId, "Unknown product", 2, 10m)]);
     }
 }

@@ -50,7 +50,7 @@ public class ProductConverterTest
     }
 
     [Fact]
-    public void ToProductsDto_ShouldMapEveryProductInOrder()
+    public void ToProductsDto_ShouldMapEveryProduct()
     {
         // Arrange
         Product[] products =
@@ -69,17 +69,16 @@ public class ProductConverterTest
         // Assert
         result.Products.Count.ShouldBe(2);
 
-        for (var index = 0; index < products.Length; index++)
+        foreach (var expected in products)
         {
-            var expected = products[index];
-            var actual = result.Products[index];
-            actual.Id.ShouldBe(expected.Id);
-            actual.Name.ShouldBe(expected.Name);
-            actual.Manufacturer.ShouldBe(expected.Manufacturer);
-            actual.ImageUrl.ShouldBe(expected.ImageUrl);
-            actual.Description.ShouldBe(expected.Description);
-            actual.Price.ShouldBe(expected.Price);
-            actual.PriceDiscount.ShouldBe(expected.PriceDiscount);
+            result.Products.ShouldContain(new ProductDto(
+                expected.Id,
+                expected.Name,
+                expected.Manufacturer,
+                expected.ImageUrl,
+                expected.Description,
+                expected.Price,
+                expected.PriceDiscount));
         }
     }
 

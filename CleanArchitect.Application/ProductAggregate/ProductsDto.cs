@@ -2,10 +2,10 @@
 
 public class ProductsDto
 {
-    public ProductsDto(IReadOnlyList<ProductDto> products)
+    public ProductsDto(IReadOnlyCollection<ProductDto> products)
     {
         Products = products;
     }
 
-    public IReadOnlyList<ProductDto> Products { get; }
+    public IReadOnlyCollection<ProductDto> Products { get; }
 }

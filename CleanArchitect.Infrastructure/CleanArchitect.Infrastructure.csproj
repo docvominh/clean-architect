@@ -7,17 +7,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Azure.Storage.Blobs" Version="12.29.2"/>
-        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="10.0.11"/>
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.11"/>
-        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="10.0.11"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.11"/>
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.19.2"/>
+        <PackageReference Include="Azure.Storage.Blobs" Version="12.29.2" />
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="10.0.11" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.11" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="10.0.11" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.11" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.19.2" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\CleanArchitect.Application\CleanArchitect.Application.csproj"/>
-        <ProjectReference Include="..\CleanArchitect.Domain\CleanArchitect.Domain.csproj"/>
+        <ProjectReference Include="..\CleanArchitect.Application\CleanArchitect.Application.csproj" />
+        <ProjectReference Include="..\CleanArchitect.Domain\CleanArchitect.Domain.csproj" />
     </ItemGroup>
 
 </Project>

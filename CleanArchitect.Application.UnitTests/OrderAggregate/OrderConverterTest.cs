@@ -84,7 +84,7 @@ public class OrderConverterTest
     }
 
     [Fact]
-    public void ToOrdersDto_ShouldMapEveryOrderInOrder()
+    public void ToOrdersDto_ShouldMapEveryOrder()
     {
         // Arrange
         var first = new Order(
@@ -103,10 +103,16 @@ public class OrderConverterTest
 
         // Assert
         result.Orders.Count.ShouldBe(2);
-        result.Orders.Select(order => order.Id).ShouldBe([first.Id, second.Id]);
-        result.Orders.Select(order => order.TotalAmount).ShouldBe([10m, 15m]);
-        result.Orders[0].Products.ShouldBe([new OrderProductDto(productId, "Widget", 2, 5m)]);
-        result.Orders[1].Products.ShouldBe([new OrderProductDto(productId, "Widget", 3, 5m)]);
+        result.Orders.ShouldContain(order =>
+            order.Id == first.Id &&
+            order.TotalAmount == 10m &&
+            order.Products.Count == 1 &&
+            order.Products.Contains(new OrderProductDto(productId, "Widget", 2, 5m)));
+        result.Orders.ShouldContain(order =>
+            order.Id == second.Id &&
+            order.TotalAmount == 15m &&
+            order.Products.Count == 1 &&
+            order.Products.Contains(new OrderProductDto(productId, "Widget", 3, 5m)));
     }
 
     [Fact]

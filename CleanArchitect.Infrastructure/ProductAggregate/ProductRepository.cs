@@ -12,14 +12,14 @@ public sealed class ProductRepository(AppDbContext dbContext) : IProductReposito
         return await dbContext.Products.FindAsync([id], cancellationToken);
     }
 
-    public Task<List<Product>> GetAllAsync(CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<Product>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return dbContext.Products.AsNoTracking().ToListAsync(cancellationToken);
+        return await dbContext.Products.AsNoTracking().ToListAsync(cancellationToken);
     }
 
-    public Task<List<Product>> GetByIdsAsync(IReadOnlyList<Guid> ids, CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<Product>> GetByIdsAsync(IReadOnlyList<Guid> ids, CancellationToken cancellationToken)
     {
-        return dbContext.Products.AsNoTracking()
+        return await dbContext.Products.AsNoTracking()
             .Where(product => ids.Contains(product.Id))
             .ToListAsync(cancellationToken);
     }

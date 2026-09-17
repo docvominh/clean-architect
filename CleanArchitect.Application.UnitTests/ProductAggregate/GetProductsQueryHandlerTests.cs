@@ -18,11 +18,12 @@ public class GetProductsQueryHandlerTests
     public async Task Handler_GetAllProducts_ShouldMapEveryProduct()
     {
         // Arrange
-        var list = new List<Product>
-        {
+        List<Product> list =
+        [
             new(Guid.NewGuid(), Guid.NewGuid(), "Widget", "Acme", 9.99m),
             new(Guid.NewGuid(), Guid.NewGuid(), "Gadget", "Acme", 19.99m)
-        };
+        ];
+
         products.Setup(p => p.GetAllAsync(It.IsAny<CancellationToken>())).ReturnsAsync(list);
         var handler = new GetProductsQueryHandler(products.Object);
 

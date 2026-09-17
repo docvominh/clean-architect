@@ -2,10 +2,10 @@ namespace CleanArchitect.Application.OrderAggregate;
 
 public class OrdersDto
 {
-    public OrdersDto(IReadOnlyList<OrderDto> orders)
+    public OrdersDto(IReadOnlyCollection<OrderDto> orders)
     {
         Orders = orders;
     }
 
-    public IReadOnlyList<OrderDto> Orders { get; }
+    public IReadOnlyCollection<OrderDto> Orders { get; }
 }

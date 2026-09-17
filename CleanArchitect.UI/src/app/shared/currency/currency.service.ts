@@ -1,36 +1,40 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { catchError, Observable, of, Subject, switchMap, timer } from 'rxjs';
 import { apiUrl } from '../../user/api-url';
-import { CurrencyCode, ExchangeRatesResponse } from './currency.models';
+import { CurrencyCode, CurrencyRate } from './currency.models';
+
+export const REFRESH_INTERVAL_MS = 30_000;
 
 @Injectable({ providedIn: 'root' })
 export class CurrencyService {
     private readonly http = inject(HttpClient);
     readonly currency = signal<CurrencyCode>('USD');
-    private readonly rates = signal<Record<string, number>>({});
+    private readonly rate = signal<number | null>(null);
+    private readonly currencyChanges = new Subject<CurrencyCode>();
 
     constructor() {
-        this.loadRates();
+        this.currencyChanges
+            .pipe(
+                switchMap(code => (code === 'USD' ? of(null) : timer(0, REFRESH_INTERVAL_MS).pipe(switchMap(() => this.fetchRate(code))))),
+                takeUntilDestroyed(),
+            )
+            .subscribe(currencyRate => this.rate.set(currencyRate?.rate ?? null));
     }
 
     setCurrency(code: CurrencyCode): void {
         this.currency.set(code);
+        this.currencyChanges.next(code);
     }
 
     convert(usdAmount: number): number {
-        const code = this.currency();
-        if (code === 'USD') return usdAmount;
-        const rate = this.rates()[code];
+        if (this.currency() === 'USD') return usdAmount;
+        const rate = this.rate();
         return rate ? usdAmount * rate : usdAmount;
     }
 
-    private async loadRates(): Promise<void> {
-        try {
-            const response = await firstValueFrom(this.http.get<ExchangeRatesResponse>(apiUrl('/api/exchange-rates')));
-            this.rates.set(response.rates);
-        } catch {
-            // Keep USD-only display if the rate service is unavailable.
-        }
+    private fetchRate(targetCurrency: CurrencyCode): Observable<CurrencyRate | null> {
+        return this.http.get<CurrencyRate>(apiUrl('/api/exchange-rates'), { params: { targetCurrency } }).pipe(catchError(() => of(null)));
     }
 }

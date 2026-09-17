@@ -13,8 +13,8 @@ namespace CleanArchitect.Api.Controllers;
 public class ExchangeRateController(ISender sender) : ControllerBase
 {
     [HttpGet]
-    public Task<ExchangeRatesDto> GetLatest(CancellationToken cancellationToken)
+    public async Task<CurrencyRate> GetLatest(string targetCurrency)
     {
-        return sender.Send(new GetExchangeRatesQuery(), cancellationToken);
+        return await sender.Send(new GetExchangeRatesQuery(targetCurrency));
     }
 }

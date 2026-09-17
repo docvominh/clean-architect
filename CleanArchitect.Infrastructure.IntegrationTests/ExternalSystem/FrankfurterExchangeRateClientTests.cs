@@ -1,4 +1,6 @@
-using CleanArchitect.Application.ExternalSystem;
+using System.Net;
+using System.Text;
+
 using CleanArchitect.Infrastructure.ExternalSystem;
 
 using Shouldly;
@@ -7,34 +9,70 @@ namespace CleanArchitect.Infrastructure.IntegrationTests.ExternalSystem;
 
 public sealed class FrankfurterExchangeRateClientTests
 {
-    private static HttpClient CreateHttpClient() => new() { BaseAddress = new Uri("https://api.frankfurter.dev/v1/") };
+    private static IHttpClientFactory CreateHttpClientFactory(HttpMessageHandler? handler = null) =>
+        new SingleClientFactory(new HttpClient(handler ?? new HttpClientHandler()) { BaseAddress = new Uri("https://api.frankfurter.dev/v2/") });
 
     [Fact]
-    public async Task GetLatestRatesAsync_UsdToGbpAndEur_ReturnsPositiveRatesForBothCurrencies()
+    public async Task GetLatestRatesAsync_UsdToGbp_ReturnsPositiveRateForSymbol()
     {
         // Arrange
-        IExchangeRate client = new FrankfurterExchangeRateClient(CreateHttpClient());
+        IFrankfurterExchangeRateClient client = new FrankfurterExchangeRateClient(CreateHttpClientFactory());
 
         // Act
-        var rates = await client.GetLatestRatesAsync("USD", ["GBP", "EUR"], CancellationToken.None);
+        var rate = await client.GetExchangeRateAsync("USD", "GBP");
 
         // Assert
-        rates.Keys.ShouldBe(["GBP", "EUR"], ignoreOrder: true);
-        rates["GBP"].ShouldBeGreaterThan(0m);
-        rates["EUR"].ShouldBeGreaterThan(0m);
+        rate.Symbol.ShouldBe("GBP");
+        rate.Rate.ShouldBeGreaterThan(0m);
     }
 
     [Fact]
     public async Task GetLatestRatesAsync_UnknownCurrencySymbol_Throws()
     {
         // Arrange
-        IExchangeRate client = new FrankfurterExchangeRateClient(CreateHttpClient());
+        IFrankfurterExchangeRateClient client = new FrankfurterExchangeRateClient(CreateHttpClientFactory());
 
         // Act
         var exception = await Record.ExceptionAsync(() =>
-            client.GetLatestRatesAsync("USD", ["ZZZ"], CancellationToken.None));
+            client.GetExchangeRateAsync("USD", "ZZZ"));
 
         // Assert
         exception.ShouldNotBeNull();
+    }
+
+    [Fact]
+    public async Task GetLatestRatesAsync_CalledTwiceWithinCacheWindow_OnlyRequestsFrankfurterOnce()
+    {
+        // Arrange
+        var handler = new CountingHandler();
+        IFrankfurterExchangeRateClient client = new FrankfurterExchangeRateClient(CreateHttpClientFactory(handler));
+
+        // Act
+        var first = await client.GetExchangeRateAsync("USD", "GBP");
+        var second = await client.GetExchangeRateAsync("USD", "GBP");
+
+        // Assert
+        handler.RequestCount.ShouldBe(1);
+        second.ShouldBe(first);
+    }
+
+    private sealed class SingleClientFactory(HttpClient httpClient) : IHttpClientFactory
+    {
+        public HttpClient CreateClient(string name) => httpClient;
+    }
+
+    private sealed class CountingHandler : HttpMessageHandler
+    {
+        public int RequestCount { get; private set; }
+
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            RequestCount++;
+            var response = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent("""{"date":"2026-09-15","base":"USD","quote":"GBP","rate":0.79}""", Encoding.UTF8, "application/json"),
+            };
+            return Task.FromResult(response);
+        }
     }
 }

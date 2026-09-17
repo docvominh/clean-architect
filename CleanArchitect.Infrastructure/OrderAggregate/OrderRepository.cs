@@ -7,25 +7,25 @@ namespace CleanArchitect.Infrastructure.OrderAggregate;
 
 public sealed class OrderRepository(AppDbContext dbContext) : IOrderRepository
 {
-    public Task<Order?> FindAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<Order?> FindAsync(Guid id, CancellationToken cancellationToken)
     {
-        return dbContext.Orders
+        return await dbContext.Orders
             .Include(o => o.OrderProducts)
             .FirstOrDefaultAsync(o => o.Id == id, cancellationToken);
     }
 
-    public Task<List<Order>> GetAllAsync(CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<Order>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return dbContext.Orders
+        return await dbContext.Orders
             .Include(o => o.OrderProducts)
             .OrderByDescending(o => o.CreatedAt)
             .AsNoTracking()
             .ToListAsync(cancellationToken);
     }
 
-    public Task<List<Order>> GetByUserAsync(Guid userId, CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<Order>> GetByUserAsync(Guid userId, CancellationToken cancellationToken)
     {
-        return dbContext.Orders
+        return await dbContext.Orders
             .Include(o => o.OrderProducts)
             .Where(o => o.CreateBy == userId)
             .OrderByDescending(o => o.CreatedAt)

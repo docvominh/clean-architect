@@ -1,25 +1,39 @@
+using System.Collections.Concurrent;
 using System.Net.Http.Json;
 
 using CleanArchitect.Application.ExternalSystem;
 
 namespace CleanArchitect.Infrastructure.ExternalSystem;
 
-public sealed class FrankfurterExchangeRateClient(HttpClient httpClient) : IExchangeRate
+public sealed class FrankfurterExchangeRateClient(IHttpClientFactory httpClientFactory) : IFrankfurterExchangeRateClient
 {
-    public async Task<IReadOnlyDictionary<string, decimal>> GetLatestRatesAsync(
-        string baseCurrency,
-        IReadOnlyCollection<string> targetCurrencies,
-        CancellationToken cancellationToken)
-    {
-        var symbols = string.Join(',', targetCurrencies);
-        var response = await httpClient.GetFromJsonAsync<FrankfurterRatesResponse>($"latest?base={baseCurrency}&symbols={symbols}", cancellationToken);
+    public const string HttpClientName = "Frankfurter";
 
-        return response?.Rates ?? throw new InvalidOperationException("Frankfurter returned no exchange rates.");
-    }
+    private static readonly TimeSpan CacheDuration = TimeSpan.FromMinutes(5);
 
-    private sealed record FrankfurterRatesResponse
+    private readonly ConcurrentDictionary<string, CurrencyRate> exchangeRates = [];
+
+    public async Task<CurrencyRate> GetExchangeRateAsync(string baseCurrency, string targetCurrency)
     {
-        public string? Base { get; init; }
-        public required IReadOnlyDictionary<string, decimal> Rates { get; init; }
+        var cacheKey = $"{baseCurrency}:{targetCurrency}";
+
+        if (exchangeRates.TryGetValue(cacheKey, out var cachedRate) && DateTimeOffset.Now - cachedRate.Time < CacheDuration)
+        {
+            return cachedRate;
+        }
+
+        var httpClient = httpClientFactory.CreateClient(HttpClientName);
+        var response = await httpClient.GetFromJsonAsync<FrankfurterRatesResponse>($"rate/{baseCurrency}/{targetCurrency}");
+
+        if (response == null)
+        {
+            throw new InvalidOperationException("Frankfurter returned no exchange rates.");
+        }
+
+        var responseRate = new CurrencyRate(response.Quote, response.Rate, DateTimeOffset.Now);
+
+        exchangeRates[cacheKey] = responseRate;
+
+        return responseRate;
     }
 }
