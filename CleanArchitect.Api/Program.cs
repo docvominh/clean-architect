@@ -94,6 +94,7 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddSingleton(new BlobServiceClient(builder.Configuration.GetConnectionString("AzureBlobStorage")));
 builder.Services.AddScoped<IStorageService, AzureBlobService>();
+builder.Services.AddMemoryCache();
 builder.Services.AddScoped<IExchangeRateService, ExchangeRateService>();
 builder.Services.AddHttpClient(FrankfurterExchangeRateClient.HttpClientName, client =>
     client.BaseAddress = new Uri("https://api.frankfurter.dev/v2/"));

@@ -41,7 +41,7 @@ public sealed class FrankfurterExchangeRateClientTests
     }
 
     [Fact]
-    public async Task GetLatestRatesAsync_CalledTwiceWithinCacheWindow_OnlyRequestsFrankfurterOnce()
+    public async Task GetLatestRatesAsync_CalledTwice_RequestsFrankfurterEachTime()
     {
         // Arrange
         var handler = new CountingHandler();
@@ -52,8 +52,8 @@ public sealed class FrankfurterExchangeRateClientTests
         var second = await client.GetExchangeRateAsync("USD", "GBP");
 
         // Assert
-        handler.RequestCount.ShouldBe(1);
-        second.ShouldBe(first);
+        handler.RequestCount.ShouldBe(2);
+        second.ShouldBe(first with { Time = second.Time });
     }
 
     private sealed class SingleClientFactory(HttpClient httpClient) : IHttpClientFactory
