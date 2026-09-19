@@ -45,6 +45,15 @@
                     >
                         🇩🇪
                     </button>
+                    <button
+                        type="button"
+                        class="button is-small"
+                        [class.is-primary]="currency.currency() === 'VND'"
+                        (click)="currency.setCurrency('VND')"
+                        aria-label="Vietnam Dong"
+                    >
+                        🇻🇳
+                    </button>
                 </div>
             </div>
             <a class="navbar-item" routerLink="/cart" (click)="closeMenus()" style="position: relative" aria-label="Cart">

@@ -1,4 +1,4 @@
-export type CurrencyCode = 'USD' | 'GBP' | 'EUR';
+export type CurrencyCode = 'USD' | 'GBP' | 'EUR' | 'VND';
 
 export interface CurrencyRate {
     symbol: string;
