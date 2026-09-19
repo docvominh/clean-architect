@@ -41,13 +41,13 @@
                                 <tr>
                                     <td>{{ line.productName }}</td>
                                     <td>{{ line.quantity }}</td>
-                                    <td>{{ line.unitPrice | number: '1.2-2' }}</td>
-                                    <td>{{ line.unitPrice * line.quantity | number: '1.2-2' }}</td>
+                                    <td>{{ line.unitPrice | appCurrency }}</td>
+                                    <td>{{ line.unitPrice * line.quantity | appCurrency }}</td>
                                 </tr>
                             }
                         </tbody>
                     </table>
-                    <p class="has-text-weight-bold has-text-right">Total: {{ order.totalAmount | number: '1.2-2' }}</p>
+                    <p class="has-text-weight-bold has-text-right">Total: {{ order.totalAmount | appCurrency }}</p>
                 </div>
             }
         }

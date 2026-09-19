@@ -6,11 +6,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { CartService } from './cart.service';
 import { OrderService } from '../order/order.service';
 import { OrderResponse } from '../order/order.models';
+import { AppCurrencyPipe } from '../shared/currency/app-currency.pipe';
 
 @Component({
     selector: 'app-checkout',
     standalone: true,
-    imports: [DecimalPipe, RouterLink, FormsModule],
+    imports: [DecimalPipe, RouterLink, FormsModule, AppCurrencyPipe],
     templateUrl: './checkout.component.html',
 })
 export class CheckoutComponent {

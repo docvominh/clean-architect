@@ -22,13 +22,13 @@
                             <tr>
                                 <td>{{ line.productName }}</td>
                                 <td>{{ line.quantity }}</td>
-                                <td>{{ line.unitPrice | number: '1.2-2' }}</td>
+                                <td>{{ line.unitPrice | appCurrency }}</td>
                                 <td>{{ line.unitPrice * line.quantity | number: '1.2-2' }}</td>
                             </tr>
                         }
                     </tbody>
                 </table>
-                <p class="has-text-weight-bold">Total: {{ order.totalAmount | number: '1.2-2' }}</p>
+                <p class="has-text-weight-bold">Total: {{ order.totalAmount | appCurrency }}</p>
                 <a class="button is-primary mt-3" routerLink="/">Continue shopping</a>
             </div>
         } @else if (cart.items().length === 0) {
@@ -55,7 +55,7 @@
                                             <span>{{ item.name }}</span>
                                         </div>
                                         <div class="column is-2">
-                                            <span>{{ item.unitPrice | number: '1.2-2' }}</span>
+                                            <span>{{ item.unitPrice | appCurrency }}</span>
                                         </div>
                                         <div class="column is-2">
                                             <div class="field has-addons">
@@ -77,7 +77,7 @@
                                             </div>
                                         </div>
                                         <div class="column is-1">
-                                            <span class="has-text-weight-bold">{{ item.unitPrice * item.quantity | number: '1.2-2' }}</span>
+                                            <span class="has-text-weight-bold">{{ item.unitPrice * item.quantity | appCurrency }}</span>
                                         </div>
                                         <div class="column is-1 has-text-right">
                                             <button
@@ -137,7 +137,7 @@
                                     <tbody>
                                         <tr>
                                             <td>Total</td>
-                                            <td class="has-text-weight-bold has-text-right">{{ cart.total() | number: '1.2-2' }}</td>
+                                            <td class="has-text-weight-bold has-text-right">{{ cart.total() | appCurrency }}</td>
                                         </tr>
                                     </tbody>
                                 </table>

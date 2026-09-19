@@ -3,11 +3,12 @@ import { DatePipe, DecimalPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { OrderService } from './order.service';
 import { OrderResponse } from './order.models';
+import { AppCurrencyPipe } from '../shared/currency/app-currency.pipe';
 
 @Component({
     selector: 'app-order-history',
     standalone: true,
-    imports: [DecimalPipe, DatePipe, RouterLink],
+    imports: [DecimalPipe, DatePipe, RouterLink, AppCurrencyPipe],
     templateUrl: './order-history.component.html',
 })
 export class OrderHistoryComponent {
