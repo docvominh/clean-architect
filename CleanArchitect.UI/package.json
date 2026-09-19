@@ -9,7 +9,8 @@
         "test": "ng test",
         "lint": "oxlint",
         "format": "prettier --write .",
-        "format:check": "prettier --check ."
+        "format:check": "prettier --check .",
+        "cert": "mkdir -p .cert && dotnet dev-certs https --export-path \"$PWD/.cert/localhost.pem\" --format Pem --no-password"
     },
     "private": true,
     "dependencies": {
